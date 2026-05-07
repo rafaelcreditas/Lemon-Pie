@@ -1,0 +1,100 @@
+:root {
+  /* ═══ Typography — Primitives ═══ */
+
+  /* fontFamily */
+  --font-family-primary: 'Helvetica Now Display';
+  --font-family-secondary: 'Maison Neue Extended';
+
+  /* fontSize */
+  --font-size-8: 8px;
+  --font-size-10: 10px;
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-20: 20px;
+  --font-size-22: 22px;
+  --font-size-24: 24px;
+  --font-size-28: 28px;
+  --font-size-32: 32px;
+  --font-size-40: 40px;
+  --font-size-48: 48px;
+  --font-size-56: 56px;
+  --font-size-64: 64px;
+  --font-size-72: 72px;
+  --font-size-80: 80px;
+
+  /* fontWeight */
+  --font-weight-bold: bold;
+  --font-weight-regular: regular;
+  --font-weight-semibold: semibold;
+
+  /* letterSpacing */
+  --letter-spacing-normal: 0.5px;
+  --letter-spacing-tight: 0.30000001192092896px;
+  --letter-spacing-wide: 1.5px;
+
+  /* lineHeight */
+  --line-height-120: 120%;
+  --line-height-125: 125%;
+  --line-height-130: 130%;
+  --line-height-133: 133%;
+  --line-height-140: 140%;
+  --line-height-150: 150%;
+}
+
+/* ═══ Typography — Semantic (100% zoom) ═══ */
+.text-headline, [data-text='headline'] {
+  font-family: 'Helvetica Now Display';
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0.5px;
+}
+.text-title-1, [data-text='title-1'] {
+  font-family: 'Helvetica Now Display';
+  font-size: 22px;
+  line-height: 120%;
+  letter-spacing: 0.5px;
+}
+.text-title-2, [data-text='title-2'] {
+  font-family: 'Helvetica Now Display';
+  font-size: 20px;
+  line-height: 120%;
+  letter-spacing: 0.5px;
+}
+.text-title-3, [data-text='title-3'] {
+  font-family: 'Helvetica Now Display';
+  font-size: 16px;
+  line-height: 120%;
+  letter-spacing: 0.5px;
+}
+.text-body, [data-text='body'] {
+  font-family: 'Helvetica Now Display';
+  font-size: 12px;
+  line-height: 120%;
+  letter-spacing: 0.5px;
+}
+.text-callout, [data-text='callout'] {
+  font-family: 'Helvetica Now Display';
+  font-size: 12px;
+  line-height: 120%;
+  letter-spacing: 0.5px;
+}
+.text-footnote, [data-text='footnote'] {
+  font-family: 'Helvetica Now Display';
+  font-size: 10px;
+  line-height: 120%;
+  letter-spacing: 0.5px;
+}
+.text-caption, [data-text='caption'] {
+  font-family: 'Helvetica Now Display';
+  font-size: 8px;
+  line-height: 120%;
+  letter-spacing: 0.5px;
+}
+.text-overline, [data-text='overline'] {
+  font-family: 'Helvetica Now Display';
+  font-size: 10px;
+  line-height: 120%;
+  letter-spacing: 0.5px;
+}

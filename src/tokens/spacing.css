@@ -1,0 +1,47 @@
+[data-density="compact"] {
+  /* ═══ Spacing — compact ═══ */
+  --spacing-0: 0px; /* Reset. Sem espaçamento. */
+  --spacing-1: 0px; /* Micro. Separadores inline, dividers sutis. */
+  --spacing-2: 2px; /* Tight. Gap entre texto e ícone, items inline. */
+  --spacing-3: 4px; /* Base. Gap padrão entre elementos relacionados. */
+  --spacing-4: 8px; /* Base+. Gap entre elementos com leve separação. */
+  --spacing-5: 10px; /* Group. Separação entre grupos de elementos. */
+  --spacing-6: 12px; /* Container. Padding interno de cards e containers. */
+  --spacing-7: 16px; /* Section. Padding de seções, margens de tela. */
+  --spacing-8: 20px; /* Block. Separação entre blocos de conteúdo. */
+  --spacing-9: 24px; /* Region. Espaçamento entre regiões de página. */
+  --spacing-10: 32px; /* Page. Espaçamento de nível de tela. */
+  --spacing-11: 40px; /* Screen. Espaçamento máximo para layouts de tela. */
+}
+
+:root {
+  /* ═══ Spacing — default ═══ */
+  --spacing-0: 0px; /* Reset. Sem espaçamento. */
+  --spacing-1: 2px; /* Micro. Separadores inline, dividers sutis. */
+  --spacing-2: 4px; /* Tight. Gap entre texto e ícone, items inline. */
+  --spacing-3: 8px; /* Base. Gap padrão entre elementos relacionados. */
+  --spacing-4: 10px; /* Base+. Gap entre elementos com leve separação. */
+  --spacing-5: 12px; /* Group. Separação entre grupos de elementos. */
+  --spacing-6: 16px; /* Container. Padding interno de cards e containers. */
+  --spacing-7: 20px; /* Section. Padding de seções, margens de tela. */
+  --spacing-8: 24px; /* Block. Separação entre blocos de conteúdo. */
+  --spacing-9: 32px; /* Region. Espaçamento entre regiões de página. */
+  --spacing-10: 40px; /* Page. Espaçamento de nível de tela. */
+  --spacing-11: 48px; /* Screen. Espaçamento máximo para layouts de tela. */
+}
+
+[data-density="comfortable"] {
+  /* ═══ Spacing — comfortable ═══ */
+  --spacing-0: 0px; /* Reset. Sem espaçamento. */
+  --spacing-1: 4px; /* Micro. Separadores inline, dividers sutis. */
+  --spacing-2: 8px; /* Tight. Gap entre texto e ícone, items inline. */
+  --spacing-3: 10px; /* Base. Gap padrão entre elementos relacionados. */
+  --spacing-4: 12px; /* Base+. Gap entre elementos com leve separação. */
+  --spacing-5: 16px; /* Group. Separação entre grupos de elementos. */
+  --spacing-6: 20px; /* Container. Padding interno de cards e containers. */
+  --spacing-7: 24px; /* Section. Padding de seções, margens de tela. */
+  --spacing-8: 32px; /* Block. Separação entre blocos de conteúdo. */
+  --spacing-9: 40px; /* Region. Espaçamento entre regiões de página. */
+  --spacing-10: 48px; /* Page. Espaçamento de nível de tela. */
+  --spacing-11: 56px; /* Screen. Espaçamento máximo para layouts de tela. */
+}

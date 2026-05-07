@@ -1,0 +1,89 @@
+:root {
+  /* ═══ Numbers & Effects — mobile ═══ */
+    --border-radius-default: 10px;
+    --border-radius-full: 40px;
+    --border-radius-huge: 20px;
+    --border-radius-large: 16px;
+    --border-radius-mid: 8px;
+    --border-radius-none: 0;
+    --border-radius-rounded: 9999px;
+    --border-radius-small: 4px;
+    --border-radius-super: 24px;
+    --border-radius-tiny: 2px;
+    --border-weight-big: 2px;
+    --border-weight-default: 1px;
+    --border-weight-medium: 1.5px;
+    --border-weight-none: 0;
+    --elevation-default-effect-1-blur: 23px;
+    --elevation-default-effect-1-spread: 0;
+    --elevation-default-effect-1-x: 40px;
+    --elevation-default-effect-1-y: 72px;
+    --elevation-default-effect-2-blur-2: 21px;
+    --elevation-default-effect-2-spread-2: 0;
+    --elevation-default-effect-2-x-2: 25px;
+    --elevation-default-effect-2-y-2: 46px;
+    --elevation-default-effect-3-blur-3: 18px;
+    --elevation-default-effect-3-spread-3: 0;
+    --elevation-default-effect-3-x-3: 14px;
+    --elevation-default-effect-3-y-3: 26px;
+    --elevation-default-effect-4-blur-4: 13px;
+    --elevation-default-effect-4-spread-4: 0;
+    --elevation-default-effect-4-x-4: 6px;
+    --elevation-default-effect-4-y-4: 12px;
+    --elevation-default-effect-5-blur-5: 7px;
+    --elevation-default-effect-5-spread-5: 0;
+    --elevation-default-effect-5-x-5: 2px;
+    --elevation-default-effect-5-y-5: 3px;
+    --opacity-disabled: 40%;
+    --opacity-high: 100%;
+    --opacity-low: 25%;
+    --opacity-medium: 50%;
+    --opacity-off: 0%;
+    --opacity-semi: 75%;
+}
+
+@media (min-width: 744px) {
+  :root {
+  /* ═══ Numbers & Effects — tablet ═══ */
+    --border-radius-default: 12px;
+    --border-radius-full: 48px;
+    --border-radius-huge: 24px;
+    --border-radius-large: 18px;
+    --border-radius-mid: 10px;
+    --border-radius-none: 0;
+    --border-radius-rounded: 9999px;
+    --border-radius-small: 6px;
+    --border-radius-super: 28px;
+    --border-radius-tiny: 2px;
+    --border-weight-big: 2px;
+    --border-weight-default: 1px;
+    --border-weight-medium: 1.5px;
+    --border-weight-none: 0;
+    --elevation-default-effect-1-blur: 23px;
+    --elevation-default-effect-1-spread: 0;
+    --elevation-default-effect-1-x: 40px;
+    --elevation-default-effect-1-y: 72px;
+    --elevation-default-effect-2-blur-2: 21px;
+    --elevation-default-effect-2-spread-2: 0;
+    --elevation-default-effect-2-x-2: 25px;
+    --elevation-default-effect-2-y-2: 46px;
+    --elevation-default-effect-3-blur-3: 18px;
+    --elevation-default-effect-3-spread-3: 0;
+    --elevation-default-effect-3-x-3: 14px;
+    --elevation-default-effect-3-y-3: 26px;
+    --elevation-default-effect-4-blur-4: 13px;
+    --elevation-default-effect-4-spread-4: 0;
+    --elevation-default-effect-4-x-4: 6px;
+    --elevation-default-effect-4-y-4: 12px;
+    --elevation-default-effect-5-blur-5: 7px;
+    --elevation-default-effect-5-spread-5: 0;
+    --elevation-default-effect-5-x-5: 2px;
+    --elevation-default-effect-5-y-5: 3px;
+    --opacity-disabled: 40%;
+    --opacity-high: 100%;
+    --opacity-low: 25%;
+    --opacity-medium: 50%;
+    --opacity-off: 0%;
+    --opacity-semi: 75%;
+  }
+}

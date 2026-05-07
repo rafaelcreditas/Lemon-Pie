@@ -1,0 +1,150 @@
+:root {
+  /* ═══ Color Theme — light ═══ */
+
+  /* action */
+  --color-action-branded-default: #81C700;
+  --color-action-branded-high: #4E7800;
+  --color-action-branded-low: #CBEE8A;
+  --color-action-branded-onColor: #F4FBE6;
+  --color-action-information-default: #298099;
+  --color-action-information-high: #174654;
+  --color-action-information-low: #9DC5D0;
+  --color-action-information-onColor: #EAF2F5;
+  --color-action-negative-default: #DE3543;
+  --color-action-negative-high: #7A1D25;
+  --color-action-negative-low: #F0A2A9;
+  --color-action-negative-onColor: #FCEBEC;
+  --color-action-neutral-default: #3A4340;
+  --color-action-neutral-high: #1C2422;
+  --color-action-neutral-low: #A8B2AF;
+  --color-action-neutral-onColor: #101715;
+  --color-action-neutral-veryHigh: #101715;
+  --color-action-neutral-veryLow: #E8ECEB;
+  --color-action-positive-default: #4F9E00;
+  --color-action-positive-high: #2B5700;
+  --color-action-positive-low: #C8E1B0;
+  --color-action-positive-onColor: #EDF5E6;
+  --color-action-warning-default: #E8BF2A;
+  --color-action-warning-high: #8C7419;
+  --color-action-warning-low: #FFEA9F;
+  --color-action-warning-onColor: #FFFBEA;
+
+  /* background */
+  --color-background-branded-default: #8EDB00;
+  --color-background-branded-high: #4E7800;
+  --color-background-branded-low: #CBEE8A;
+  --color-background-branded-onColor: #F4FBE6;
+  --color-background-modal-default: rgba(0, 0, 0, 0.65);
+  --color-background-neutral-default: #FFFFFF;
+  --color-background-neutral-high: #F2F4F3;
+  --color-background-neutral-low: #E8ECEB;
+  --color-background-secondary-default: #A8B2AF;
+  --color-background-secondary-high: #7A8682;
+  --color-background-secondary-low: #D4DAD8;
+
+  /* decorative */
+  --color-decorative-avatar-default: #D4DAD8;
+  --color-decorative-avatar-high: #7A8682;
+  --color-decorative-avatar-low: #E8ECEB;
+  --color-decorative-avatar-onColor: #1C2422;
+  --color-decorative-graphs-graph 1 - default: #72B133;
+  --color-decorative-graphs-graph 1 - high: #214200;
+  --color-decorative-graphs-graph 1 - low: #EDF5E6;
+  --color-decorative-graphs-graph 2 - default: #F99964;
+  --color-decorative-graphs-graph 2 - high: #68351A;
+  --color-decorative-graphs-graph 2 - low: #FEF2EC;
+  --color-decorative-graphs-graph 3 - default: #E389B4;
+  --color-decorative-graphs-graph 3 - high: #5C2D44;
+  --color-decorative-graphs-graph 3 - low: #FCF0F6;
+  --color-decorative-graphs-graph 4 - default: #5499AD;
+  --color-decorative-graphs-graph 4 - high: #113640;
+  --color-decorative-graphs-graph 4 - low: #EAF2F5;
+  --color-decorative-graphs-graph 5 - default: #FFDB58;
+  --color-decorative-graphs-graph 5 - high: #6B5813;
+  --color-decorative-graphs-graph 5 - low: #FFFBEA;
+  --color-decorative-graphs-graph 6 - default: #E55D69;
+  --color-decorative-graphs-graph 6 - high: #5D161C;
+  --color-decorative-graphs-graph 6 - low: #FCEBEC;
+
+  /* icon */
+  --color-icon-branded-default: #81C700;
+  --color-icon-branded-high: #4E7800;
+  --color-icon-branded-low: #CBEE8A;
+  --color-icon-branded-onColor: #F4FBE6;
+  --color-icon-information-default: #298099;
+  --color-icon-information-high: #174654;
+  --color-icon-information-low: #9DC5D0;
+  --color-icon-information-onColor: #EAF2F5;
+  --color-icon-negative-default: #DE3543;
+  --color-icon-negative-high: #7A1D25;
+  --color-icon-negative-low: #F0A2A9;
+  --color-icon-negative-onColor: #FCEBEC;
+  --color-icon-neutral-default: #3A4340;
+  --color-icon-neutral-high: #1C2422;
+  --color-icon-neutral-low: #7A8682;
+  --color-icon-neutral-onColor: #101715;
+  --color-icon-neutral-veryHigh: #101715;
+  --color-icon-neutral-veryLow: #D4DAD8;
+  --color-icon-positive-default: #4F9E00;
+  --color-icon-positive-high: #2B5700;
+  --color-icon-positive-low: #AED28A;
+  --color-icon-positive-onColor: #EDF5E6;
+  --color-icon-warning-default: #E8BF2A;
+  --color-icon-warning-high: #8C7419;
+  --color-icon-warning-low: #FFEA9F;
+  --color-icon-warning-onColor: #FFFBEA;
+
+  /* surface */
+  --color-surface-branded-default: #8EDB00;
+  --color-surface-branded-high: #4E7800;
+  --color-surface-branded-low: #CBEE8A;
+  --color-surface-branded-onColor: #F4FBE6;
+  --color-surface-information-default: #298099;
+  --color-surface-information-high: #174654;
+  --color-surface-information-low: #9DC5D0;
+  --color-surface-information-onColor: #EAF2F5;
+  --color-surface-negative-default: #DE3543;
+  --color-surface-negative-high: #7A1D25;
+  --color-surface-negative-low: #F0A2A9;
+  --color-surface-negative-onColor: #FCEBEC;
+  --color-surface-neutral-default: #FFFFFF;
+  --color-surface-neutral-high: #7A8682;
+  --color-surface-neutral-low: #E8ECEB;
+  --color-surface-neutral-onColor: #F2F4F3;
+  --color-surface-positive-default: #4F9E00;
+  --color-surface-positive-high: #2B5700;
+  --color-surface-positive-low: #C8E1B0;
+  --color-surface-positive-onColor: #EDF5E6;
+  --color-surface-warning-default: #E8BF2A;
+  --color-surface-warning-high: #8C7419;
+  --color-surface-warning-low: #FFEA9F;
+  --color-surface-warning-onColor: #FFFBEA;
+
+  /* text */
+  --color-text-branded-default: #81C700;
+  --color-text-branded-high: #4E7800;
+  --color-text-branded-low: #CBEE8A;
+  --color-text-branded-onColor: #F4FBE6;
+  --color-text-information-default: #298099;
+  --color-text-information-high: #174654;
+  --color-text-information-low: #9DC5D0;
+  --color-text-information-onColor: #EAF2F5;
+  --color-text-negative-default: #DE3543;
+  --color-text-negative-high: #7A1D25;
+  --color-text-negative-low: #F0A2A9;
+  --color-text-negative-onColor: #FCEBEC;
+  --color-text-neutral-default: #3A4340;
+  --color-text-neutral-high: #1C2422;
+  --color-text-neutral-low: #525C59;
+  --color-text-neutral-onColor: #101715;
+  --color-text-neutral-veryHigh: #101715;
+  --color-text-neutral-veryLow: #A8B2AF;
+  --color-text-positive-default: #4F9E00;
+  --color-text-positive-high: #2B5700;
+  --color-text-positive-low: #AED28A;
+  --color-text-positive-onColor: #EDF5E6;
+  --color-text-warning-default: #E8BF2A;
+  --color-text-warning-high: #8C7419;
+  --color-text-warning-low: #FFEA9F;
+  --color-text-warning-onColor: #FFFBEA;
+}

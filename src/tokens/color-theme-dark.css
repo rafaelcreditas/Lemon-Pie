@@ -1,0 +1,150 @@
+[data-theme="dark"] {
+  /* ═══ Color Theme — dark ═══ */
+
+  /* action */
+  --color-action-branded-default: #B3E754;
+  --color-action-branded-high: #CBEE8A;
+  --color-action-branded-low: #8EDB00;
+  --color-action-branded-onColor: #3C5C00;
+  --color-action-information-default: #298099;
+  --color-action-information-high: #70AABB;
+  --color-action-information-low: #1D5B6D;
+  --color-action-information-onColor: #EAF2F5;
+  --color-action-negative-default: #DE3543;
+  --color-action-negative-high: #E97881;
+  --color-action-negative-low: #9E2630;
+  --color-action-negative-onColor: #FCEBEC;
+  --color-action-neutral-default: #D4DAD8;
+  --color-action-neutral-high: #FFFFFF;
+  --color-action-neutral-low: #7A8682;
+  --color-action-neutral-onColor: #101715;
+  --color-action-neutral-veryHigh: #FFFFFF;
+  --color-action-neutral-veryLow: #3A4340;
+  --color-action-positive-default: #4F9E00;
+  --color-action-positive-high: #89BE54;
+  --color-action-positive-low: #387000;
+  --color-action-positive-onColor: #EDF5E6;
+  --color-action-warning-default: #FFD22E;
+  --color-action-warning-high: #FFE173;
+  --color-action-warning-low: #B59521;
+  --color-action-warning-onColor: #FFFBEA;
+
+  /* background */
+  --color-background-branded-default: #B3E754;
+  --color-background-branded-high: #CBEE8A;
+  --color-background-branded-low: #8EDB00;
+  --color-background-branded-onColor: #3C5C00;
+  --color-background-modal-default: rgba(0, 0, 0, 0.65);
+  --color-background-neutral-default: #101715;
+  --color-background-neutral-high: #101715;
+  --color-background-neutral-low: #101715;
+  --color-background-secondary-default: #7A8682;
+  --color-background-secondary-high: #525C59;
+  --color-background-secondary-low: #A8B2AF;
+
+  /* decorative */
+  --color-decorative-avatar-default: #525C59;
+  --color-decorative-avatar-high: #7A8682;
+  --color-decorative-avatar-low: #3A4340;
+  --color-decorative-avatar-onColor: #FFFFFF;
+  --color-decorative-graphs-graph 1 - default: #72B133;
+  --color-decorative-graphs-graph 1 - high: #EDF5E6;
+  --color-decorative-graphs-graph 1 - low: #214200;
+  --color-decorative-graphs-graph 2 - default: #F99964;
+  --color-decorative-graphs-graph 2 - high: #FEF2EC;
+  --color-decorative-graphs-graph 2 - low: #68351A;
+  --color-decorative-graphs-graph 3 - default: #E389B4;
+  --color-decorative-graphs-graph 3 - high: #FCF0F6;
+  --color-decorative-graphs-graph 3 - low: #5C2D44;
+  --color-decorative-graphs-graph 4 - default: #5499AD;
+  --color-decorative-graphs-graph 4 - high: #EAF2F5;
+  --color-decorative-graphs-graph 4 - low: #113640;
+  --color-decorative-graphs-graph 5 - default: #FFDB58;
+  --color-decorative-graphs-graph 5 - high: #FFFBEA;
+  --color-decorative-graphs-graph 5 - low: #6B5813;
+  --color-decorative-graphs-graph 6 - default: #E55D69;
+  --color-decorative-graphs-graph 6 - high: #FCEBEC;
+  --color-decorative-graphs-graph 6 - low: #5D161C;
+
+  /* icon */
+  --color-icon-branded-default: #CBEE8A;
+  --color-icon-branded-high: #DCF4B0;
+  --color-icon-branded-low: #B3E754;
+  --color-icon-branded-onColor: #3C5C00;
+  --color-icon-information-default: #25748B;
+  --color-icon-information-high: #70AABB;
+  --color-icon-information-low: #113640;
+  --color-icon-information-onColor: #9DC5D0;
+  --color-icon-negative-default: #E55D69;
+  --color-icon-negative-high: #F0A2A9;
+  --color-icon-negative-low: #CA303D;
+  --color-icon-negative-onColor: #FCEBEC;
+  --color-icon-neutral-default: #D4DAD8;
+  --color-icon-neutral-high: #FFFFFF;
+  --color-icon-neutral-low: #A8B2AF;
+  --color-icon-neutral-onColor: #101715;
+  --color-icon-neutral-veryHigh: #FFFFFF;
+  --color-icon-neutral-veryLow: #7A8682;
+  --color-icon-positive-default: #72B133;
+  --color-icon-positive-high: #AED28A;
+  --color-icon-positive-low: #489000;
+  --color-icon-positive-onColor: #EDF5E6;
+  --color-icon-warning-default: #FFDB58;
+  --color-icon-warning-high: #FFEA9F;
+  --color-icon-warning-low: #E8BF2A;
+  --color-icon-warning-onColor: #FFFBEA;
+
+  /* surface */
+  --color-surface-branded-default: #B3E754;
+  --color-surface-branded-high: #CBEE8A;
+  --color-surface-branded-low: #8EDB00;
+  --color-surface-branded-onColor: #3C5C00;
+  --color-surface-information-default: #25748B;
+  --color-surface-information-high: #70AABB;
+  --color-surface-information-low: #113640;
+  --color-surface-information-onColor: #BDD8DF;
+  --color-surface-negative-default: #CA303D;
+  --color-surface-negative-high: #9E2630;
+  --color-surface-negative-low: #5D161C;
+  --color-surface-negative-onColor: #F5C0C5;
+  --color-surface-neutral-default: #1C2422;
+  --color-surface-neutral-high: #3A4340;
+  --color-surface-neutral-low: #3A4340;
+  --color-surface-neutral-onColor: #FFFFFF;
+  --color-surface-positive-default: #489000;
+  --color-surface-positive-high: #387000;
+  --color-surface-positive-low: #214200;
+  --color-surface-positive-onColor: #C8E1B0;
+  --color-surface-warning-default: #B59521;
+  --color-surface-warning-high: #B59521;
+  --color-surface-warning-low: #8C7419;
+  --color-surface-warning-onColor: #FFF1BE;
+
+  /* text */
+  --color-text-branded-default: #B3E754;
+  --color-text-branded-high: #CBEE8A;
+  --color-text-branded-low: #A5E233;
+  --color-text-branded-onColor: #3C5C00;
+  --color-text-information-default: #70AABB;
+  --color-text-information-high: #70AABB;
+  --color-text-information-low: #113640;
+  --color-text-information-onColor: #9DC5D0;
+  --color-text-negative-default: #E97881;
+  --color-text-negative-high: #F0A2A9;
+  --color-text-negative-low: #F5C0C5;
+  --color-text-negative-onColor: #F5C0C5;
+  --color-text-neutral-default: #D4DAD8;
+  --color-text-neutral-high: #E8ECEB;
+  --color-text-neutral-low: #A8B2AF;
+  --color-text-neutral-onColor: #101715;
+  --color-text-neutral-veryHigh: #FFFFFF;
+  --color-text-neutral-veryLow: #7A8682;
+  --color-text-positive-default: #89BE54;
+  --color-text-positive-high: #AED28A;
+  --color-text-positive-low: #C8E1B0;
+  --color-text-positive-onColor: #C8E1B0;
+  --color-text-warning-default: #FFE173;
+  --color-text-warning-high: #FFEA9F;
+  --color-text-warning-low: #FFF1BE;
+  --color-text-warning-onColor: #6B5813;
+}
