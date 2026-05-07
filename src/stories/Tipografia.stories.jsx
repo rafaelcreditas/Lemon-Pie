@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { tokenData } from '../tokens/token-data';
+import { typeZoomData } from '../tokens/data-typezoom';
 
 export default {
   title: 'Tokens/Tipografia',
@@ -13,7 +13,7 @@ const SAMPLE_TEXT = 'Creditas transforma vidas com crédito inteligente.';
 export const EscalaTipografica = () => {
   const [zoom, setZoom] = useState('100%');
   const [weight, setWeight] = useState('regular');
-  const data = tokenData.typeZoom[zoom];
+  const data = typeZoomData[zoom];
   
   return (
     <div>
@@ -106,7 +106,7 @@ export const TabelaDeZoom = () => {
             <tr key={style} style={{ borderBottom: '1px solid #f0f0f0' }}>
               <td style={{ padding: 8, fontWeight: 600 }}>{style}</td>
               {ZOOM_LEVELS.map(z => {
-                const val = tokenData.typeZoom[z]?.[style]?.fontSize?.$value;
+                const val = typeZoomData[z]?.[style]?.fontSize?.$value;
                 return (
                   <td key={z} style={{ 
                     padding: 8, textAlign: 'center', fontFamily: 'monospace',
@@ -137,7 +137,7 @@ export const TabelaDeZoom = () => {
 };
 
 export const PreviewRegularVsBold = () => {
-  const data = tokenData.typeZoom['100%'];
+  const data = typeZoomData['100%'];
   
   return (
     <div>

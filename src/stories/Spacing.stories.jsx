@@ -1,5 +1,5 @@
 import React from 'react';
-import { tokenData } from '../tokens/token-data';
+import { spacingData } from '../tokens/data-spacing';
 
 export default {
   title: 'Tokens/Spacing',
@@ -53,13 +53,13 @@ export const EscalaCompleta = () => (
       Collection <code>📏 spacing</code> — 12 tokens semânticos com labels descritivos.
       Scope: <code>GAP</code>. A escala muda por modo de densidade.
     </p>
-    <SpacingMode mode="default" data={tokenData.spacing.default} />
+    <SpacingMode mode="default" data={spacingData.default} />
   </div>
 );
 
 export const ComparativoDeDensidades = () => {
   const modes = ['compact', 'default', 'comfortable'];
-  const steps = Object.keys(tokenData.spacing.default?.spacing || {})
+  const steps = Object.keys(spacingData.default?.spacing || {})
     .filter(k => k !== '$extensions')
     .sort((a, b) => parseInt(a) - parseInt(b));
   
@@ -82,10 +82,10 @@ export const ComparativoDeDensidades = () => {
           {steps.map(step => (
             <tr key={step} style={{ borderBottom: '1px solid #f0f0f0' }}>
               <td style={{ padding: 8, fontFamily: 'monospace', fontWeight: 600 }}>spacing/{step}</td>
-              <td style={{ padding: 8, color: '#666' }}>{tokenData.spacing.default?.spacing?.[step]?.$description?.split('.')[0] || ''}</td>
+              <td style={{ padding: 8, color: '#666' }}>{spacingData.default?.spacing?.[step]?.$description?.split('.')[0] || ''}</td>
               {modes.map(m => (
                 <td key={m} style={{ padding: 8, textAlign: 'right', fontFamily: 'monospace' }}>
-                  {tokenData.spacing[m]?.spacing?.[step]?.$value}px
+                  {spacingData[m]?.spacing?.[step]?.$value}px
                 </td>
               ))}
             </tr>

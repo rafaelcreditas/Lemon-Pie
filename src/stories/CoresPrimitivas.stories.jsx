@@ -1,5 +1,5 @@
 import React from 'react';
-import { tokenData } from '../tokens/token-data';
+import { primitiveColors } from '../tokens/data-primitive-colors';
 
 export default {
   title: 'Tokens/Cores Primitivas',
@@ -37,7 +37,7 @@ const PaletteRow = ({ name, palette }) => {
 };
 
 export const TodasAsPaletas = () => {
-  const colors = tokenData.primitiveColors;
+  const colors = primitiveColors;
   const palettes = Object.keys(colors).filter(k => k !== '$extensions').sort();
   return (
     <div>

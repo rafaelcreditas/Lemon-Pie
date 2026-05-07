@@ -1,5 +1,5 @@
 import React from 'react';
-import { tokenData } from '../tokens/token-data';
+import { numbersData } from '../tokens/data-numbers';
 
 export default {
   title: 'Tokens/Border Radius',
@@ -22,8 +22,8 @@ const RadiusPreview = ({ name, value, desc }) => (
 );
 
 export const EscalaDeRadius = () => {
-  const mobile = tokenData.numbersEffects.mobile;
-  const tablet = tokenData.numbersEffects.tablet;
+  const mobile = numbersData.mobile;
+  const tablet = numbersData.tablet;
   
   const radiusTokens = Object.entries(mobile?.border?.radius || {})
     .filter(([k]) => k !== '$extensions')
@@ -74,7 +74,7 @@ export const EscalaDeRadius = () => {
 };
 
 export const Opacity = () => {
-  const opacity = tokenData.numbersEffects.mobile?.opacity || {};
+  const opacity = numbersData.mobile?.opacity || {};
   const steps = Object.entries(opacity)
     .filter(([k]) => k !== '$extensions')
     .sort((a, b) => a[1].$value - b[1].$value);
@@ -101,7 +101,7 @@ export const Opacity = () => {
 };
 
 export const BorderWeight = () => {
-  const weight = tokenData.numbersEffects.mobile?.border?.weight || {};
+  const weight = numbersData.mobile?.border?.weight || {};
   const steps = Object.entries(weight)
     .filter(([k]) => k !== '$extensions')
     .sort((a, b) => a[1].$value - b[1].$value);

@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lemon Pie DS — Design Tokens Reference</title>
+  <style>
+    :root {
+      --lp-green: #BFFF00;
+      --lp-dark: #1A1A2E;
+      --lp-surface: #FFFFFF;
+      --lp-surface-low: #F7F7F8;
+      --lp-border: #E4E4E7;
+      --lp-text-primary: #18181B;
+      --lp-text-secondary: #71717A;
+      --lp-text-muted: #A1A1AA;
+      --lp-positive: #16A34A;
+      --lp-negative: #DC2626;
+      --lp-warning: #F59E0B;
+      --lp-info: #0891B2;
+      --lp-radius: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--lp-surface-low);
+      color: var(--lp-text-primary);
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    .hero {
+      background: var(--lp-dark);
+      color: #fff;
+      padding: 48px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: var(--lp-green);
+      border-radius: 50%;
+      opacity: 0.12;
+      filter: blur(80px);
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      position: relative;
+    }
+    .hero h1 span { color: var(--lp-green); }
+    .hero p {
+      margin-top: 12px;
+      color: #A1A1AA;
+      font-size: 1.05rem;
+      max-width: 640px;
+      position: relative;
+    }
+    .hero .meta {
+      margin-top: 24px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .hero .meta .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      font-size: 0.82rem;
+      color: #D4D4D8;
+    }
+    .hero .meta .badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--lp-border);
+      padding: 0 32px;
+      overflow-x: auto;
+    }
+    .nav ul {
+      list-style: none;
+      display: flex;
+      gap: 4px;
+    }
+    .nav a {
+      display: block;
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--lp-text-secondary);
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .nav a:hover, .nav a.active {
+      color: var(--lp-text-primary);
+      border-bottom-color: var(--lp-green);
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+    section {
+      margin-bottom: 56px;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .section-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .section-header .collection-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: #F0FDF4;
+      color: #166534;
+    }
+    .section-desc {
+      color: var(--lp-text-secondary);
+      font-size: 0.92rem;
+      margin-bottom: 24px;
+      max-width: 720px;
+    }
+
+    /* ── TOKEN TABLE ── */
+    .token-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--lp-surface);
+      border-radius: var(--lp-radius);
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .token-table thead {
+      background: var(--lp-surface-low);
+    }
+    .token-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--lp-text-muted);
+      border-bottom: 1px solid var(--lp-border);
+    }
+    .token-table td {
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      border-bottom: 1px solid var(--lp-border);
+      vertical-align: middle;
+    }
+    .token-table tr:last-child td { border-bottom: none; }
+    .token-table tr:hover td { background: #FAFAFA; }
+
+    .token-name {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--lp-text-primary);
+      background: var(--lp-surface-low);
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .token-desc {
+      color: var(--lp-text-secondary);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .scope-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      border-radius: 4px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      margin: 1px 2px;
+    }
+
+    /* ── COLOR SWATCH ── */
+    .swatch-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .swatch {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+
+    /* ── SPACING VISUAL ── */
+    .spacing-bar {
+      height: 24px;
+      background: linear-gradient(90deg, var(--lp-green), #A3E635);
+      border-radius: 4px;
+      min-width: 4px;
+      transition: width 0.3s ease;
+    }
+
+    /* ── RADIUS VISUAL ── */
+    .radius-box {
+      width: 48px; height: 48px;
+      background: var(--lp-surface-low);
+      border: 2px solid var(--lp-border);
+      display: inline-block;
+    }
+
+    /* ── CARDS GRID ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .token-card {
+      background: var(--lp-surface);
+      border-radius: var(--lp-radius);
+      padding: 20px;
+      border: 1px solid var(--lp-border);
+      transition: box-shadow 0.2s;
+    }
+    .token-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .token-card .card-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--lp-text-muted);
+      margin-bottom: 6px;
+    }
+    .token-card .card-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--lp-text-primary);
+      margin-bottom: 8px;
+    }
+    .token-card .card-desc {
+      font-size: 0.82rem;
+      color: var(--lp-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── COLOR PALETTE ── */
+    .palette-section {
+      margin-bottom: 32px;
+    }
+    .palette-section h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .palette-section h3 .dot-indicator {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .palette-card {
+      background: var(--lp-surface);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--lp-border);
+    }
+    .palette-card .color-preview {
+      height: 56px;
+      position: relative;
+    }
+    .palette-card .color-info {
+      padding: 12px 14px;
+    }
+    .palette-card .color-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .palette-card .color-desc {
+      font-size: 0.75rem;
+      color: var(--lp-text-secondary);
+      line-height: 1.4;
+    }
+    .palette-card .color-scopes {
+      margin-top: 6px;
+    }
+
+    /* ── TYPOGRAPHY PREVIEW ── */
+    .typo-row {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--lp-border);
+    }
+    .typo-row:last-child { border-bottom: none; }
+    .typo-preview {
+      flex: 0 0 280px;
+      font-weight: bold;
+      color: var(--lp-text-primary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .typo-meta {
+      flex: 1;
+    }
+
+    /* ── LIBRARY BADGE ── */
+    .lib-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .lib-badge.lemon {
+      background: #F0FDF4;
+      color: #166534;
+    }
+    .lib-badge.refactor {
+      background: #FFF7ED;
+      color: #9A3412;
+    }
+    .lib-badge.greenstone {
+      background: #EFF6FF;
+      color: #1E40AF;
+    }
+    .lib-badge.componentes {
+      background: #FAF5FF;
+      color: #7C3AED;
+    }
+
+    /* ── COPY BUTTON ── */
+    .copy-btn {
+      background: none;
+      border: 1px solid var(--lp-border);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      color: var(--lp-text-secondary);
+      transition: all 0.15s;
+    }
+    .copy-btn:hover {
+      background: var(--lp-surface-low);
+      color: var(--lp-text-primary);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 40px 32px;
+      color: var(--lp-text-muted);
+      font-size: 0.82rem;
+      border-top: 1px solid var(--lp-border);
+    }
+    footer a {
+      color: var(--lp-text-secondary);
+      text-decoration: underline;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 1.8rem; }
+      .container { padding: 20px 16px; }
+      .palette-grid { grid-template-columns: 1fr; }
+      .typo-row { flex-direction: column; gap: 8px; }
+      .typo-preview { flex: none; }
+    }
+
+    /* ── SEARCH ── */
+    .search-wrapper {
+      margin-bottom: 32px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 12px 16px 12px 44px;
+      border: 1px solid var(--lp-border);
+      border-radius: 10px;
+      font-size: 0.92rem;
+      background: var(--lp-surface);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus {
+      border-color: #A3E635;
+      box-shadow: 0 0 0 3px rgba(163, 230, 53, 0.15);
+    }
+    .search-box {
+      position: relative;
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--lp-text-muted);
+    }
+
+    /* ── ARCHITECTURE DIAGRAM ── */
+    .arch-diagram {
+      background: var(--lp-surface);
+      border-radius: var(--lp-radius);
+      padding: 32px;
+      border: 1px solid var(--lp-border);
+      margin-bottom: 32px;
+    }
+    .arch-layer {
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .arch-layer:last-child { margin-bottom: 0; }
+    .arch-label {
+      flex: 0 0 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--lp-text-muted);
+    }
+    .arch-boxes {
+      flex: 1;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .arch-box {
+      flex: 1;
+      min-width: 140px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+    .arch-box.green { background: #F0FDF4; color: #166534; border: 1px solid #BBF7D0; }
+    .arch-box.orange { background: #FFF7ED; color: #9A3412; border: 1px solid #FED7AA; }
+    .arch-box.blue { background: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }
+    .arch-box small { display: block; font-weight: 400; font-size: 0.72rem; margin-top: 2px; opacity: 0.7; }
+    .arch-arrow {
+      text-align: center;
+      color: var(--lp-text-muted);
+      font-size: 1.2rem;
+      padding: 4px 0;
+      margin-left: 132px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero">
+  <h1>🍋 <span>Lemon Pie</span> Design System</h1>
+  <p>Referência completa de design tokens — variables, styles, espaçamento, tipografia, bordas e efeitos extraídos do Figma para implementação em código.</p>
+  <div class="meta">
+    <span class="badge"><span class="dot" style="background:#BFFF00"></span> Lemon Pie DS</span>
+    <span class="badge"><span class="dot" style="background:#FB923C"></span> DS Refactor - tokens</span>
+    <span class="badge"><span class="dot" style="background:#60A5FA"></span> Greenstone / shadcn</span>
+    <span class="badge"><span class="dot" style="background:#A78BFA"></span> ❖ Componentes</span>
+  </div>
+</header>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav class="nav">
+  <ul>
+    <li><a href="#architecture">Arquitetura</a></li>
+    <li><a href="#colors-semantic">Cores Semânticas</a></li>
+    <li><a href="#colors-text">Texto</a></li>
+    <li><a href="#colors-icon">Ícones</a></li>
+    <li><a href="#colors-bg">Background</a></li>
+    <li><a href="#colors-elevation">Elevation</a></li>
+    <li><a href="#spacing">Espaçamento</a></li>
+    <li><a href="#border-radius">Border Radius</a></li>
+    <li><a href="#typography">Tipografia</a></li>
+    <li><a href="#actions">Actions</a></li>
+    <li><a href="#foreground">Foreground</a></li>
+    <li><a href="#styles">Styles</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- ═══════════ SEARCH ═══════════ -->
+  <div class="search-wrapper">
+    <div class="search-box">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" id="search" placeholder="Buscar tokens (ex: background, spacing, branded, onColor...)">
+    </div>
+  </div>
+
+  <!-- ═══════════ ARCHITECTURE ═══════════ -->
+  <section id="architecture">
+    <div class="section-header">
+      <h2>Arquitetura de Tokens</h2>
+    </div>
+    <p class="section-desc">O Lemon Pie DS é composto por 3 bibliotecas Figma que se complementam em camadas. As variables são organizadas em collections temáticas.</p>
+
+    <div class="arch-diagram">
+      <div class="arch-layer">
+        <div class="arch-label">Semântico</div>
+        <div class="arch-boxes">
+          <div class="arch-box green">🎨 colorTheme <small>Cores semânticas da marca — Lemon Pie DS</small></div>
+          <div class="arch-box orange">Mode <small>Tokens de modo claro/escuro — DS Refactor</small></div>
+        </div>
+      </div>
+      <div class="arch-arrow">↑ referencia</div>
+      <div class="arch-layer">
+        <div class="arch-label">Utilitário</div>
+        <div class="arch-boxes">
+          <div class="arch-box green">📏 spacing <small>Escala de espaçamento — Lemon Pie DS</small></div>
+          <div class="arch-box green">🔢 numbers&amp;effects <small>Radius, elevation — Lemon Pie DS</small></div>
+          <div class="arch-box orange">Responsive <small>Tipografia responsiva — DS Refactor</small></div>
+          <div class="arch-box orange">Brand <small>Border-radius por marca — DS Refactor</small></div>
+        </div>
+      </div>
+      <div class="arch-arrow">↑ referencia</div>
+      <div class="arch-layer">
+        <div class="arch-label">Primitivo</div>
+        <div class="arch-boxes">
+          <div class="arch-box blue">💨 Tailwind <small>Cores, spacing, font-size base — Greenstone/shadcn</small></div>
+          <div class="arch-box blue">☀️ Mode <small>Border radius, temas shadcn — Greenstone/shadcn</small></div>
+          <div class="arch-box blue">🎨 semantic:colors <small>Cores semânticas base — Greenstone/shadcn</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ COLORS: SEMANTIC / BACKGROUND ═══════════ -->
+  <section id="colors-semantic">
+    <div class="section-header">
+      <h2>Cores Semânticas — Background</h2>
+      <span class="collection-tag">🎨 colorTheme</span>
+    </div>
+    <p class="section-desc">Tokens de cor para fundos de elementos. Organizados em 3 níveis de ênfase: <strong>low</strong>, <strong>default</strong> e <strong>high</strong>.</p>
+
+    <!-- Secondary -->
+    <div class="palette-section">
+      <h3><span class="dot-indicator" style="background:#E4E4E7"></span> background/secondary</h3>
+      <div class="palette-grid">
+        <div class="palette-card" data-search="background secondary low">
+          <div class="color-preview" style="background: #F4F4F5"></div>
+          <div class="color-info">
+            <div class="color-name">background/secondary/low</div>
+            <div class="color-desc">Fundo secundário sutil. Ideal para inputs, tabs e áreas que precisam de leve distinção do fundo.</div>
+            <div class="color-scopes"><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span></div>
+          </div>
+        </div>
+        <div class="palette-card" data-search="background secondary default">
+          <div class="color-preview" style="background: #E4E4E7"></div>
+          <div class="color-info">
+            <div class="color-name">background/secondary/default</div>
+            <div class="color-desc">Fundo secundário padrão. Use em cards, listas e áreas que precisam se diferenciar do fundo principal.</div>
+            <div class="color-scopes"><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span></div>
+          </div>
+        </div>
+        <div class="palette-card" data-search="background secondary high">
+          <div class="color-preview" style="background: #D4D4D8"></div>
+          <div class="color-info">
+            <div class="color-name">background/secondary/high</div>
+            <div class="color-desc">Fundo secundário em nível alto. Ideal para painéis, sidebars e áreas de conteúdo complementar.</div>
+            <div class="color-scopes"><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Branded -->
+    <div class="palette-section">
+      <h3><span class="dot-indicator" style="background:#BFFF00"></span> background/branded</h3>
+      <div class="palette-grid">
+        <div class="palette-card" data-search="background branded default">
+          <div class="color-preview" style="background: #BFFF00"></div>
+          <div class="color-info">
+            <div class="color-name">background/branded/default</div>
+            <div class="color-desc">Fundo na cor da marca Creditas (limeGreen). Use em headers, banners e CTAs de alto destaque da marca.</div>
+            <div class="color-scopes"><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Surface (DS Refactor) -->
+    <div class="palette-section">
+      <h3><span class="dot-indicator" style="background:#FAFAFA"></span> background/surface <span class="lib-badge refactor">DS Refactor</span></h3>
+      <div class="palette-grid">
+        <div class="palette-card" data-search="background surface low">
+          <div class="color-preview" style="background: #FAFAFA"></div>
+          <div class="color-info">
+            <div class="color-name">background/surface/low</div>
+            <div class="color-desc">Fundo de superfície sutil — popovers, tooltips</div>
+            <div class="color-scopes"><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span></div>
+          </div>
+        </div>
+        <div class="palette-card" data-search="background surface default">
+          <div class="color-preview" style="background: #FFFFFF; border-bottom: 1px solid #E4E4E7"></div>
+          <div class="color-info">
+            <div class="color-name">background/surface/default</div>
+            <div class="color-desc">Fundo de cards, painéis e superfícies elevadas</div>
+            <div class="color-scopes"><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span></div>
+          </div>
+        </div>
+        <div class="palette-card" data-search="background surface high">
+          <div class="color-preview" style="background: #FFFFFF; border-bottom: 1px solid #E4E4E7"></div>
+          <div class="color-info">
+            <div class="color-name">background/surface/high</div>
+            <div class="color-desc">Fundo de superfície com alto contraste — modais, sidesheets</div>
+            <div class="color-scopes"><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ COLORS: TEXT ═══════════ -->
+  <section id="colors-text">
+    <div class="section-header">
+      <h2>Cores de Texto</h2>
+      <span class="collection-tag">🎨 colorTheme</span>
+    </div>
+    <p class="section-desc">Tokens <code>text/**/onColor</code> garantem contraste em textos sobrepostos a superfícies coloridas. Cada cor semântica tem seu token onColor correspondente.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Descrição</th>
+          <th>Escopo</th>
+          <th>Biblioteca</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-search="text branded onColor limeGreen marca">
+          <td><span class="token-name">text/branded/onColor</span></td>
+          <td class="token-desc">Texto da marca sobre fundos limeGreen. Garante contraste de textos em superfícies da marca Creditas.</td>
+          <td><span class="scope-badge">TEXT_FILL</span></td>
+          <td><span class="lib-badge lemon">Lemon Pie DS</span></td>
+        </tr>
+        <tr data-search="text neutral onColor cor background">
+          <td><span class="token-name">text/neutral/onColor</span></td>
+          <td class="token-desc">Texto neutro sobre fundos coloridos. Garante legibilidade de textos em backgrounds de cor.</td>
+          <td><span class="scope-badge">TEXT_FILL</span></td>
+          <td><span class="lib-badge lemon">Lemon Pie DS</span></td>
+        </tr>
+        <tr data-search="text positive onColor verde sucesso">
+          <td><span class="token-name">text/positive/onColor</span></td>
+          <td class="token-desc">Texto positivo sobre fundos verdes. Garante contraste em textos sobrepostos a surfaces de sucesso.</td>
+          <td><span class="scope-badge">TEXT_FILL</span></td>
+          <td><span class="lib-badge lemon">Lemon Pie DS</span></td>
+        </tr>
+        <tr data-search="text negative onColor vermelho erro">
+          <td><span class="token-name">text/negative/onColor</span></td>
+          <td class="token-desc">Texto de erro sobre fundos vermelhos. Garante contraste em textos sobrepostos a surfaces de erro.</td>
+          <td><span class="scope-badge">TEXT_FILL</span></td>
+          <td><span class="lib-badge lemon">Lemon Pie DS</span></td>
+        </tr>
+        <tr data-search="text warning onColor amarelo alerta aviso">
+          <td><span class="token-name">text/warning/onColor</span></td>
+          <td class="token-desc">Texto de alerta sobre fundos amarelos. Garante contraste em textos sobrepostos a surfaces de aviso.</td>
+          <td><span class="scope-badge">TEXT_FILL</span></td>
+          <td><span class="lib-badge lemon">Lemon Pie DS</span></td>
+        </tr>
+        <tr data-search="text information onColor teal informativo">
+          <td><span class="token-name">text/information/onColor</span></td>
+          <td class="token-desc">Texto informativo sobre fundos teal. Garante contraste em textos sobrepostos a superfícies informativas.</td>
+          <td><span class="scope-badge">TEXT_FILL</span></td>
+          <td><span class="lib-badge lemon">Lemon Pie DS</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════ COLORS: ICON ═══════════ -->
+  <section id="colors-icon">
+    <div class="section-header">
+      <h2>Cores de Ícone</h2>
+      <span class="collection-tag">🎨 colorTheme</span>
+    </div>
+    <p class="section-desc">Tokens <code>icon/**/onColor</code> para ícones sobre superfícies coloridas. Usam escopos de FILL e STROKE.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Descrição</th>
+          <th>Escopos</th>
+          <th>Biblioteca</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-search="icon branded onColor limeGreen">
+          <td><span class="token-name">icon/branded/onColor</span></td>
+          <td class="token-desc">Ícone da marca sobre fundos limeGreen. Use em ícones sobrepostos a superfícies da marca Creditas.</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span><span class="scope-badge">STROKE</span></td>
+          <td><span class="lib-badge lemon">Lemon Pie DS</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════ COLORS: BACKGROUND (DS REFACTOR) ═══════════ -->
+  <section id="colors-bg">
+    <div class="section-header">
+      <h2>Cores de Background — DS Refactor</h2>
+      <span class="collection-tag" style="background:#FFF7ED; color:#9A3412">Mode</span>
+    </div>
+    <p class="section-desc">Tokens da nova camada de tokens do DS Refactor, organizados na collection <strong>Mode</strong> (suporte a light/dark mode).</p>
+
+    <table class="token-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Descrição</th>
+          <th>Escopos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-search="background surface low tooltip popover">
+          <td><span class="token-name">background/surface/low</span></td>
+          <td class="token-desc">Fundo de superfície sutil — popovers, tooltips</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span></td>
+        </tr>
+        <tr data-search="background surface default card painel">
+          <td><span class="token-name">background/surface/default</span></td>
+          <td class="token-desc">Fundo de cards, painéis e superfícies elevadas</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span></td>
+        </tr>
+        <tr data-search="background surface high modal sidesheet">
+          <td><span class="token-name">background/surface/high</span></td>
+          <td class="token-desc">Fundo de superfície com alto contraste — modais, sidesheets</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════ ELEVATION ═══════════ -->
+  <section id="colors-elevation">
+    <div class="section-header">
+      <h2>Elevation / Sombras</h2>
+      <span class="collection-tag">🔢 numbers&amp;effects</span>
+    </div>
+    <p class="section-desc">O token <code>elevation/default</code> é composto por 5 camadas de sombra (effects). Cada efeito tem uma variável de cor associada. Na implementação, use o <strong>Effect Style</strong> correspondente no Figma — não aplique as cores diretamente.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Descrição</th>
+          <th>Escopo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-search="elevation effect 1 color sombra shadow">
+          <td><span class="token-name">elevation/default/effect 1/color</span></td>
+          <td class="token-desc">Parâmetro X/Y/blur/spread/color do efeito elevation/default. Use o Effect Style correspondente.</td>
+          <td><span class="scope-badge">EFFECT_COLOR</span></td>
+        </tr>
+        <tr data-search="elevation effect 2 color sombra shadow">
+          <td><span class="token-name">elevation/default/effect 2/color 2</span></td>
+          <td class="token-desc">Parâmetro X/Y/blur/spread/color do efeito elevation/default. Use o Effect Style correspondente.</td>
+          <td><span class="scope-badge">EFFECT_COLOR</span></td>
+        </tr>
+        <tr data-search="elevation effect 3 color sombra shadow">
+          <td><span class="token-name">elevation/default/effect 3/color 3</span></td>
+          <td class="token-desc">Parâmetro X/Y/blur/spread/color do efeito elevation/default. Use o Effect Style correspondente.</td>
+          <td><span class="scope-badge">EFFECT_COLOR</span></td>
+        </tr>
+        <tr data-search="elevation effect 4 color sombra shadow">
+          <td><span class="token-name">elevation/default/effect 4/color 4</span></td>
+          <td class="token-desc">Parâmetro X/Y/blur/spread/color do efeito elevation/default. Use o Effect Style correspondente.</td>
+          <td><span class="scope-badge">EFFECT_COLOR</span></td>
+        </tr>
+        <tr data-search="elevation effect 5 color sombra shadow">
+          <td><span class="token-name">elevation/default/effect 5/color 5</span></td>
+          <td class="token-desc">Parâmetro X/Y/blur/spread/color do efeito elevation/default. Use o Effect Style correspondente.</td>
+          <td><span class="scope-badge">EFFECT_COLOR</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 16px; padding: 16px; background: #FFF7ED; border-radius: 8px; border: 1px solid #FED7AA;">
+      <strong style="font-size: 0.85rem; color: #9A3412;">⚠️ Nota para devs:</strong>
+      <p style="font-size: 0.82rem; color: #78350F; margin-top: 4px;">Não use estas variáveis de cor individuais como <code>box-shadow</code> separadas. Aplique o Effect Style <code>elevation/default</code> no Figma, que compõe todas as 5 camadas. Em código, implemente como um <code>box-shadow</code> multi-camada ou como um token composto.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════ SPACING ═══════════ -->
+  <section id="spacing">
+    <div class="section-header">
+      <h2>Espaçamento</h2>
+      <span class="collection-tag">📏 spacing</span>
+    </div>
+    <p class="section-desc">Escala de espaçamento com 10 níveis (0–9). Cada nível tem uma descrição semântica de uso. Collection: <strong>📏 spacing</strong> — escopo: <code>GAP</code>.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr>
+          <th style="width: 160px">Token</th>
+          <th style="width: 80px">Nível</th>
+          <th>Alias / Uso</th>
+          <th style="width: 180px">Visual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-search="spacing 0 reset zero sem">
+          <td><span class="token-name">spacing/0</span></td>
+          <td>0px</td>
+          <td class="token-desc"><strong>Reset</strong> — Sem espaçamento.</td>
+          <td><div class="spacing-bar" style="width: 0; border: 1px dashed #D4D4D8"></div></td>
+        </tr>
+        <tr data-search="spacing 1 micro separador inline divider">
+          <td><span class="token-name">spacing/1</span></td>
+          <td>2px</td>
+          <td class="token-desc"><strong>Micro</strong> — Separadores inline, dividers sutis.</td>
+          <td><div class="spacing-bar" style="width: 8px"></div></td>
+        </tr>
+        <tr data-search="spacing 2 tight gap texto icone inline">
+          <td><span class="token-name">spacing/2</span></td>
+          <td>4px</td>
+          <td class="token-desc"><strong>Tight</strong> — Gap entre texto e ícone, items inline.</td>
+          <td><div class="spacing-bar" style="width: 16px"></div></td>
+        </tr>
+        <tr data-search="spacing 3 base gap padrao elementos relacionados">
+          <td><span class="token-name">spacing/3</span></td>
+          <td>8px</td>
+          <td class="token-desc"><strong>Base</strong> — Gap padrão entre elementos relacionados.</td>
+          <td><div class="spacing-bar" style="width: 32px"></div></td>
+        </tr>
+        <tr data-search="spacing 4 base+ gap leve separacao">
+          <td><span class="token-name">spacing/4</span></td>
+          <td>12px</td>
+          <td class="token-desc"><strong>Base+</strong> — Gap entre elementos com leve separação.</td>
+          <td><div class="spacing-bar" style="width: 48px"></div></td>
+        </tr>
+        <tr data-search="spacing 5 group separacao grupos">
+          <td><span class="token-name">spacing/5</span></td>
+          <td>16px</td>
+          <td class="token-desc"><strong>Group</strong> — Separação entre grupos de elementos.</td>
+          <td><div class="spacing-bar" style="width: 64px"></div></td>
+        </tr>
+        <tr data-search="spacing 6 container padding interno cards">
+          <td><span class="token-name">spacing/6</span></td>
+          <td>20px</td>
+          <td class="token-desc"><strong>Container</strong> — Padding interno de cards e containers.</td>
+          <td><div class="spacing-bar" style="width: 80px"></div></td>
+        </tr>
+        <tr data-search="spacing 7 section padding secoes margem tela">
+          <td><span class="token-name">spacing/7</span></td>
+          <td>24px</td>
+          <td class="token-desc"><strong>Section</strong> — Padding de seções, margens de tela.</td>
+          <td><div class="spacing-bar" style="width: 96px"></div></td>
+        </tr>
+        <tr data-search="spacing 8 block separacao blocos conteudo">
+          <td><span class="token-name">spacing/8</span></td>
+          <td>32px</td>
+          <td class="token-desc"><strong>Block</strong> — Separação entre blocos de conteúdo.</td>
+          <td><div class="spacing-bar" style="width: 128px"></div></td>
+        </tr>
+        <tr data-search="spacing 9 region espacamento regioes pagina">
+          <td><span class="token-name">spacing/9</span></td>
+          <td>48px</td>
+          <td class="token-desc"><strong>Region</strong> — Espaçamento entre regiões de página.</td>
+          <td><div class="spacing-bar" style="width: 180px"></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════ BORDER RADIUS ═══════════ -->
+  <section id="border-radius">
+    <div class="section-header">
+      <h2>Border Radius</h2>
+    </div>
+    <p class="section-desc">Tokens de arredondamento, divididos entre a collection <strong>🔢 numbers&amp;effects</strong> (Lemon Pie) e <strong>Brand</strong> (DS Refactor). Escopo: <code>CORNER_RADIUS</code>.</p>
+
+    <div class="cards-grid">
+      <div class="token-card" data-search="border radius full avatar badge grande arredondamento">
+        <div style="display:flex; justify-content:space-between; align-items:start">
+          <div>
+            <div class="card-label">Lemon Pie DS — 🔢 numbers&amp;effects</div>
+            <div class="card-name">border/radius/full</div>
+          </div>
+          <div class="radius-box" style="border-radius: 999px; width:48px; height:48px"></div>
+        </div>
+        <div class="card-desc">Border radius full. Use em elementos de grande arredondamento como avatares e badges grandes.</div>
+        <div style="margin-top:8px"><span class="scope-badge">CORNER_RADIUS</span></div>
+      </div>
+      <div class="token-card" data-search="border radius large super modal grande formato curvatura">
+        <div style="display:flex; justify-content:space-between; align-items:start">
+          <div>
+            <div class="card-label">Lemon Pie DS — 🔢 numbers&amp;effects</div>
+            <div class="card-name">border/radius/large</div>
+          </div>
+          <div class="radius-box" style="border-radius: 16px; width:48px; height:48px"></div>
+        </div>
+        <div class="card-desc">Border radius super. Use em modais de grande formato e elementos de alta curvatura.</div>
+        <div style="margin-top:8px"><span class="scope-badge">CORNER_RADIUS</span></div>
+      </div>
+      <div class="token-card" data-search="border radius card minimo badges chips pequenos">
+        <div style="display:flex; justify-content:space-between; align-items:start">
+          <div>
+            <div class="card-label">DS Refactor — Brand</div>
+            <div class="card-name">border-radius/card</div>
+          </div>
+          <div class="radius-box" style="border-radius: 4px; width:48px; height:48px"></div>
+        </div>
+        <div class="card-desc">Raio mínimo, badges e chips pequenos</div>
+        <div style="margin-top:8px"><span class="scope-badge">CORNER_RADIUS</span></div>
+      </div>
+      <div class="token-card" data-search="border radius button padrao componentes shadcn">
+        <div style="display:flex; justify-content:space-between; align-items:start">
+          <div>
+            <div class="card-label">DS Refactor — Brand</div>
+            <div class="card-name">border-radius/button</div>
+          </div>
+          <div class="radius-box" style="border-radius: 8px; width:48px; height:48px"></div>
+        </div>
+        <div class="card-desc">Raio padrão de componentes. shadcN: --radius</div>
+        <div style="margin-top:8px"><span class="scope-badge">CORNER_RADIUS</span></div>
+      </div>
+      <div class="token-card" data-search="border radius rounded grande modais sheets">
+        <div style="display:flex; justify-content:space-between; align-items:start">
+          <div>
+            <div class="card-label">DS Refactor — Brand</div>
+            <div class="card-name">border-radius/rounded</div>
+          </div>
+          <div class="radius-box" style="border-radius: 12px; width:48px; height:48px"></div>
+        </div>
+        <div class="card-desc">Raio grande, modais e sheets</div>
+        <div style="margin-top:8px"><span class="scope-badge">CORNER_RADIUS</span></div>
+      </div>
+      <div class="token-card" data-search="border radius none zero sem">
+        <div style="display:flex; justify-content:space-between; align-items:start">
+          <div>
+            <div class="card-label">DS Refactor — Brand</div>
+            <div class="card-name">border-radius/none</div>
+          </div>
+          <div class="radius-box" style="border-radius: 0; width:48px; height:48px"></div>
+        </div>
+        <div class="card-desc">Sem arredondamento (sharp corners)</div>
+        <div style="margin-top:8px"><span class="scope-badge">CORNER_RADIUS</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TYPOGRAPHY ═══════════ -->
+  <section id="typography">
+    <div class="section-header">
+      <h2>Tipografia</h2>
+      <span class="collection-tag" style="background:#FFF7ED; color:#9A3412">Responsive</span>
+    </div>
+    <p class="section-desc">Tokens tipográficos da collection <strong>Responsive</strong> (DS Refactor). Valores de font-size e font-weight adaptam-se por breakpoint.</p>
+
+    <div style="background: var(--lp-surface); border-radius: var(--lp-radius); padding: 24px; border: 1px solid var(--lp-border);">
+      <div class="typo-row" data-search="typography h1 heading titulo principal">
+        <div class="typo-preview" style="font-size: 2rem; font-weight: 800">Heading 1</div>
+        <div class="typo-meta">
+          <span class="token-name">typography/h1/font-size</span> &nbsp;+&nbsp; <span class="token-name">typography/h1/font-weight</span>
+          <div class="token-desc" style="margin-top:4px">Collection: Responsive — valores adaptam por breakpoint</div>
+        </div>
+      </div>
+      <div class="typo-row" data-search="typography h2 heading subtitulo">
+        <div class="typo-preview" style="font-size: 1.5rem; font-weight: 700">Heading 2</div>
+        <div class="typo-meta">
+          <span class="token-name">typography/h2/font-size</span> &nbsp;+&nbsp; <span class="token-name">typography/h2/font-weight</span>
+          <div class="token-desc" style="margin-top:4px">Peso de fonte — h2. Tamanho de fonte — h2</div>
+        </div>
+      </div>
+      <div class="typo-row" data-search="typography h3 heading secao">
+        <div class="typo-preview" style="font-size: 1.25rem; font-weight: 600">Heading 3</div>
+        <div class="typo-meta">
+          <span class="token-name">typography/h3/font-size</span>
+          <div class="token-desc" style="margin-top:4px">Tamanho de fonte — h3</div>
+        </div>
+      </div>
+      <div class="typo-row" data-search="typography h4 heading sub secao">
+        <div class="typo-preview" style="font-size: 1.1rem; font-weight: 600">Heading 4</div>
+        <div class="typo-meta">
+          <span class="token-name">typography/h4/font-size</span>
+          <div class="token-desc" style="margin-top:4px">Tamanho de fonte — h4</div>
+        </div>
+      </div>
+      <div class="typo-row" data-search="typography footnote rodape pequeno">
+        <div class="typo-preview" style="font-size: 0.75rem; font-weight: 400">Footnote text</div>
+        <div class="typo-meta">
+          <span class="token-name">typography/footnote/font-size</span>
+          <div class="token-desc" style="margin-top:4px">Tamanho de fonte — footnote</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ ACTIONS ═══════════ -->
+  <section id="actions">
+    <div class="section-header">
+      <h2>Action Tokens</h2>
+      <span class="collection-tag" style="background:#FFF7ED; color:#9A3412">Mode</span>
+    </div>
+    <p class="section-desc">Tokens para ações e elementos interativos. Incluem suporte a estados (default, hover, pressed) e cores de contraste (onColor).</p>
+
+    <table class="token-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Descrição</th>
+          <th>Escopos</th>
+          <th>Biblioteca</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-search="action primary default botao repouso">
+          <td><span class="token-name">action/primary/default</span></td>
+          <td class="token-desc">Fundo do botão primary em repouso (hover/pressed usam acento ou escuro)</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span><span class="scope-badge">STROKE</span></td>
+          <td><span class="lib-badge refactor">DS Refactor</span></td>
+        </tr>
+        <tr data-search="action info onColor texto icone botao informativo">
+          <td><span class="token-name">action/info/onColor</span></td>
+          <td class="token-desc">Texto ou ícone sobre o botão informativo</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span><span class="scope-badge">TEXT_FILL</span></td>
+          <td><span class="lib-badge refactor">DS Refactor</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════ FOREGROUND ═══════════ -->
+  <section id="foreground">
+    <div class="section-header">
+      <h2>Foreground Tokens</h2>
+      <span class="collection-tag" style="background:#FFF7ED; color:#9A3412">Mode</span>
+    </div>
+    <p class="section-desc">Tokens <code>foreground/**/onColor</code> do DS Refactor. Usados para texto e ícones sobre superfícies com cor de fundo forte. Suportam light/dark mode.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Descrição</th>
+          <th>Escopos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-search="foreground branded onColor marca texto icone">
+          <td><span class="token-name">foreground/branded/onColor</span></td>
+          <td class="token-desc">Texto ou ícone sobre fundo de marca</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span><span class="scope-badge">TEXT_FILL</span><span class="scope-badge">STROKE</span></td>
+        </tr>
+        <tr data-search="foreground neutral onColor neutro escuro">
+          <td><span class="token-name">foreground/neutral/onColor</span></td>
+          <td class="token-desc">Texto ou ícone sobre fundo neutro escuro (onColor neutro)</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span><span class="scope-badge">TEXT_FILL</span><span class="scope-badge">STROKE</span></td>
+        </tr>
+        <tr data-search="foreground info onColor informativo">
+          <td><span class="token-name">foreground/info/onColor</span></td>
+          <td class="token-desc">Texto ou ícone sobre fundo informativo</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span><span class="scope-badge">TEXT_FILL</span><span class="scope-badge">STROKE</span></td>
+        </tr>
+        <tr data-search="foreground success onColor sucesso">
+          <td><span class="token-name">foreground/success/onColor</span></td>
+          <td class="token-desc">Texto ou ícone sobre fundo de sucesso</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span><span class="scope-badge">TEXT_FILL</span><span class="scope-badge">STROKE</span></td>
+        </tr>
+        <tr data-search="foreground warning onColor alerta">
+          <td><span class="token-name">foreground/warning/onColor</span></td>
+          <td class="token-desc">Texto ou ícone sobre fundo de alerta</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span><span class="scope-badge">TEXT_FILL</span><span class="scope-badge">STROKE</span></td>
+        </tr>
+        <tr data-search="foreground destructive onColor erro">
+          <td><span class="token-name">foreground/destructive/onColor</span></td>
+          <td class="token-desc">Texto ou ícone sobre fundo de erro</td>
+          <td><span class="scope-badge">FRAME_FILL</span><span class="scope-badge">SHAPE_FILL</span><span class="scope-badge">TEXT_FILL</span><span class="scope-badge">STROKE</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════ STYLES (❖ COMPONENTES) ═══════════ -->
+  <section id="styles">
+    <div class="section-header">
+      <h2>Color Styles — ❖ Componentes</h2>
+      <span class="collection-tag" style="background:#FAF5FF; color:#7C3AED">Styles</span>
+    </div>
+    <p class="section-desc">Styles de preenchimento (FILL) publicados pela biblioteca <strong>❖ Componentes</strong>. São referências de cor usadas em componentes legados e em migração para variables.</p>
+
+    <div class="palette-section">
+      <h3><span class="dot-indicator" style="background:#166534"></span> Primary</h3>
+      <div class="palette-grid">
+        <div class="palette-card" data-search="primary color 20">
+          <div class="color-preview" style="background: #C8E6C9"></div>
+          <div class="color-info"><div class="color-name">Primary/color-20</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+        <div class="palette-card" data-search="primary color 40">
+          <div class="color-preview" style="background: #81C784"></div>
+          <div class="color-info"><div class="color-name">Primary/color-40</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+        <div class="palette-card" data-search="primary color 60">
+          <div class="color-preview" style="background: #4CAF50"></div>
+          <div class="color-info"><div class="color-name">Primary/color-60</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+        <div class="palette-card" data-search="primary color 90">
+          <div class="color-preview" style="background: #1B5E20"></div>
+          <div class="color-info"><div class="color-name">Primary/color-90</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+        <div class="palette-card" data-search="primary color 100">
+          <div class="color-preview" style="background: #0D3B0F"></div>
+          <div class="color-info"><div class="color-name">Primary/color-100</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-section">
+      <h3><span class="dot-indicator" style="background:#71717A"></span> Neutral</h3>
+      <div class="palette-grid">
+        <div class="palette-card" data-search="neutral color 0 white branco">
+          <div class="color-preview" style="background: #FFFFFF; border-bottom: 1px solid #E4E4E7"></div>
+          <div class="color-info"><div class="color-name">Neutral/color-0</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+        <div class="palette-card" data-search="neutral color 10">
+          <div class="color-preview" style="background: #F5F5F5"></div>
+          <div class="color-info"><div class="color-name">Neutral/color-10</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+        <div class="palette-card" data-search="neutral color 20">
+          <div class="color-preview" style="background: #EEEEEE"></div>
+          <div class="color-info"><div class="color-name">Neutral/color-20</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+        <div class="palette-card" data-search="neutral color 40">
+          <div class="color-preview" style="background: #BDBDBD"></div>
+          <div class="color-info"><div class="color-name">Neutral/color-40</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+        <div class="palette-card" data-search="neutral color 60">
+          <div class="color-preview" style="background: #757575"></div>
+          <div class="color-info"><div class="color-name">Neutral/color-60</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+        <div class="palette-card" data-search="neutral color 80">
+          <div class="color-preview" style="background: #424242"></div>
+          <div class="color-info"><div class="color-name">Neutral/color-80</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+        <div class="palette-card" data-search="neutral color 100">
+          <div class="color-preview" style="background: #212121"></div>
+          <div class="color-info"><div class="color-name">Neutral/color-100</div><div class="color-desc">Style FILL — ❖ Componentes</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-section">
+      <h3><span class="dot-indicator" style="background:#DC2626"></span> Feedback</h3>
+      <div class="palette-grid">
+        <div class="palette-card" data-search="feedback success sucess color 60 verde sucesso">
+          <div class="color-preview" style="background: #4CAF50"></div>
+          <div class="color-info">
+            <div class="color-name">Feedback/Sucess/color-60</div>
+            <div class="color-desc">Main color as success indicator</div>
+          </div>
+        </div>
+        <div class="palette-card" data-search="feedback error color 80 vermelho erro">
+          <div class="color-preview" style="background: #C62828"></div>
+          <div class="color-info">
+            <div class="color-name">Feedback/Error/color-80</div>
+            <div class="color-desc">Style FILL — ❖ Componentes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <p>Lemon Pie DS — Design Tokens Reference &middot; Gerado em 17/04/2026</p>
+  <p style="margin-top:4px"><a href="https://www.figma.com/design/Co1zD0W0U5teOBaqv1boej/Lemon-Pie-DS?node-id=2028-9925" target="_blank">Abrir no Figma ↗</a></p>
+</footer>
+
+<script>
+  // ── Search functionality ──
+  const searchInput = document.getElementById('search');
+  searchInput.addEventListener('input', function () {
+    const query = this.value.toLowerCase().trim();
+    const searchables = document.querySelectorAll('[data-search]');
+    const tableRows = document.querySelectorAll('.token-table tbody tr');
+    const cards = document.querySelectorAll('.token-card, .palette-card');
+    const typoRows = document.querySelectorAll('.typo-row');
+
+    const allItems = [...searchables, ...tableRows, ...cards, ...typoRows];
+
+    allItems.forEach(el => {
+      const searchText = (
+        (el.dataset.search || '') + ' ' +
+        el.textContent
+      ).toLowerCase();
+
+      if (!query || searchText.includes(query)) {
+        el.style.display = '';
+      } else {
+        el.style.display = 'none';
+      }
+    });
+  });
+
+  // ── Sticky nav active state ──
+  const navLinks = document.querySelectorAll('.nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector('.nav a[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-80px 0px -80% 0px' });
+
+  document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+
+  // ── Copy token name on click ──
+  document.querySelectorAll('.token-name').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.title = 'Clique para copiar';
+    el.addEventListener('click', () => {
+      navigator.clipboard.writeText(el.textContent).then(() => {
+        const orig = el.textContent;
+        el.textContent = '✓ copiado!';
+        el.style.color = '#16A34A';
+        setTimeout(() => {
+          el.textContent = orig;
+          el.style.color = '';
+        }, 1200);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

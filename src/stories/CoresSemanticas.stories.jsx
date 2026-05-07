@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { tokenData } from '../tokens/token-data';
+import { colorThemeLight } from '../tokens/data-color-light';
+import { colorThemeDark } from '../tokens/data-color-dark';
 
 export default {
   title: 'Tokens/Cores Semânticas',
@@ -53,7 +54,7 @@ const DomainSection = ({ domain, data, prefix = '' }) => {
 };
 
 export const LightMode = () => {
-  const colors = tokenData.colorTheme.light;
+  const colors = colorThemeLight;
   const domains = Object.keys(colors).filter(k => k !== '$extensions');
   return (
     <div>
@@ -70,7 +71,7 @@ export const LightMode = () => {
 };
 
 export const DarkMode = () => {
-  const colors = tokenData.colorTheme.dark;
+  const colors = colorThemeDark;
   const domains = Object.keys(colors).filter(k => k !== '$extensions');
   return (
     <div style={{ background: '#101715', color: '#f2f4f3', padding: 24, borderRadius: 12, margin: -24 }}>
@@ -86,8 +87,8 @@ export const DarkMode = () => {
 };
 
 export const Comparativo = () => {
-  const light = tokenData.colorTheme.light;
-  const dark = tokenData.colorTheme.dark;
+  const light = colorThemeLight;
+  const dark = colorThemeDark;
   
   const flatten = (obj, prefix = '') => {
     const result = {};

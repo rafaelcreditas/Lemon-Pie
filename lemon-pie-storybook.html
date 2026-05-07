@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍋 Lemon Pie DS — Storybook</title>
+<style>
+  :root {
+    --sb-sidebar-w: 260px;
+    --sb-bg: #ffffff;
+    --sb-bg-alt: #f6f7f8;
+    --sb-border: #e6e8eb;
+    --sb-text: #1c2422;
+    --sb-text-muted: #525c59;
+    --sb-accent: #81c700;
+    --sb-accent-dark: #4e7800;
+    --sb-sidebar-bg: #f9fafb;
+    --sb-code-bg: #1e1e2e;
+    --sb-code-text: #cdd6f4;
+    --sb-radius: 8px;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--sb-text);
+    background: var(--sb-bg);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: var(--sb-sidebar-w);
+    min-width: var(--sb-sidebar-w);
+    background: var(--sb-sidebar-bg);
+    border-right: 1px solid var(--sb-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-header {
+    padding: 20px 16px 12px;
+    border-bottom: 1px solid var(--sb-border);
+  }
+
+  .sidebar-header h1 {
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sidebar-header p {
+    font-size: 11px;
+    color: var(--sb-text-muted);
+    margin-top: 4px;
+  }
+
+  .sidebar-search {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--sb-border);
+  }
+
+  .sidebar-search input {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid var(--sb-border);
+    border-radius: 6px;
+    font-size: 12px;
+    outline: none;
+    background: #fff;
+    transition: border-color .15s;
+  }
+
+  .sidebar-search input:focus { border-color: var(--sb-accent); }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+  }
+
+  .nav-group {
+    margin-bottom: 4px;
+  }
+
+  .nav-group-title {
+    padding: 6px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--sb-text-muted);
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px 6px 24px;
+    font-size: 13px;
+    color: var(--sb-text);
+    cursor: pointer;
+    transition: background .1s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+  }
+
+  .nav-item:hover { background: #eef0f2; }
+  .nav-item.active { background: #e8f5d0; color: var(--sb-accent-dark); font-weight: 600; }
+  .nav-item .icon { font-size: 14px; width: 18px; text-align: center; }
+
+  /* ── Main ── */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  .page {
+    display: none;
+    padding: 32px 40px 60px;
+    max-width: 960px;
+  }
+
+  .page.active { display: block; }
+
+  .page h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .page h2 .badge {
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--sb-accent);
+    color: #f4fbe6;
+    padding: 2px 8px;
+    border-radius: 999px;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+
+  .page .subtitle {
+    color: var(--sb-text-muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .page h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 32px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--sb-border);
+  }
+
+  .page h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 20px 0 8px;
+  }
+
+  /* ── Preview canvas ── */
+  .preview {
+    border: 1px solid var(--sb-border);
+    border-radius: var(--sb-radius);
+    padding: 24px;
+    background: var(--sb-bg);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .preview.dark-bg {
+    background: #101715;
+  }
+
+  .preview.col {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .preview-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--sb-text-muted);
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  /* ── Code block ── */
+  .code-block {
+    background: var(--sb-code-bg);
+    color: var(--sb-code-text);
+    border-radius: var(--sb-radius);
+    padding: 16px 20px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    overflow-x: auto;
+    margin-bottom: 16px;
+    position: relative;
+    white-space: pre;
+  }
+
+  .code-block .kw { color: #cba6f7; }
+  .code-block .str { color: #a6e3a1; }
+  .code-block .cmt { color: #6c7086; font-style: italic; }
+  .code-block .fn { color: #89b4fa; }
+  .code-block .tag { color: #f38ba8; }
+  .code-block .attr { color: #fab387; }
+  .code-block .val { color: #a6e3a1; }
+  .code-block .type { color: #f9e2af; }
+
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 10px;
+    font-size: 11px;
+    background: #313244;
+    color: #cdd6f4;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+  }
+  .copy-btn:hover { background: #45475a; }
+
+  /* ── Props table ── */
+  .props-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .props-table th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--sb-bg-alt);
+    border-bottom: 2px solid var(--sb-border);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--sb-text-muted);
+  }
+
+  .props-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--sb-border);
+    vertical-align: top;
+  }
+
+  .props-table code {
+    background: var(--sb-bg-alt);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: #7a1d25;
+  }
+
+  .props-table .default {
+    color: var(--sb-text-muted);
+    font-style: italic;
+  }
+
+  /* ── Token swatches ── */
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border: 1px solid var(--sb-border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s;
+  }
+
+  .swatch:hover {
+    border-color: var(--sb-accent);
+    box-shadow: 0 0 0 2px rgba(129,199,0,.15);
+  }
+
+  .swatch-color {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,.08);
+    flex-shrink: 0;
+  }
+
+  .swatch-info {
+    min-width: 0;
+  }
+
+  .swatch-name {
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .swatch-hex {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--sb-text-muted);
+  }
+
+  /* ── Mode toggle ── */
+  .mode-toggle {
+    display: inline-flex;
+    border: 1px solid var(--sb-border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .mode-toggle button {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    background: #fff;
+    font-family: inherit;
+    transition: background .1s;
+  }
+
+  .mode-toggle button.active {
+    background: var(--sb-accent);
+    color: #f4fbe6;
+  }
+
+  .mode-toggle button:not(:last-child) {
+    border-right: 1px solid var(--sb-border);
+  }
+
+  /* ── Component previews (html mockups) ── */
+  .btn-mock {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 16px;
+    height: 40px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: filter .15s;
+  }
+  .btn-mock:hover { filter: brightness(.92); }
+  .btn-mock.default { background: #81c700; color: #f4fbe6; }
+  .btn-mock.secondary { background: #a8b2af; color: #1c2422; }
+  .btn-mock.destructive { background: #de3543; color: #fcebec; }
+  .btn-mock.outline { background: transparent; border: 1px solid #e8eceb; color: #1c2422; }
+  .btn-mock.ghost { background: transparent; color: #1c2422; }
+  .btn-mock.ghost:hover { background: #e8eceb; }
+  .btn-mock.link { background: transparent; color: #81c700; text-decoration: underline; }
+  .btn-mock.xs { height: 28px; padding: 0 8px; font-size: 12px; border-radius: 6px; }
+  .btn-mock.sm { height: 32px; padding: 0 12px; font-size: 13px; border-radius: 6px; }
+  .btn-mock.lg { height: 48px; padding: 0 24px; font-size: 16px; border-radius: 10px; }
+  .btn-mock:disabled { opacity: .5; cursor: not-allowed; }
+  .btn-mock .spinner { width: 16px; height: 16px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin .6s linear infinite; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%,100% { opacity: .4; } 50% { opacity: 1; } }
+
+  .badge-mock {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-mock.default { background: #81c700; color: #f4fbe6; }
+  .badge-mock.secondary { background: #a8b2af; color: #1c2422; }
+  .badge-mock.destructive { background: #de3543; color: #fcebec; }
+  .badge-mock.outline { background: transparent; border: 1px solid #e8eceb; color: #1c2422; }
+
+  .input-mock {
+    height: 40px;
+    border: 1px solid #e8eceb;
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 14px;
+    width: 280px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color .15s;
+  }
+  .input-mock:focus { border-color: #81c700; }
+  .input-mock.invalid { border-color: #de3543; }
+  .input-mock:disabled { opacity: .5; }
+
+  .textarea-mock {
+    border: 1px solid #e8eceb;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    width: 320px;
+    min-height: 80px;
+    outline: none;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color .15s;
+  }
+  .textarea-mock:focus { border-color: #81c700; }
+
+  .avatar-mock {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1c2422;
+    background: #d4dad8;
+  }
+  .avatar-mock.xl { width: 48px; height: 48px; font-size: 18px; }
+  .avatar-mock.sm { width: 24px; height: 24px; font-size: 10px; }
+  .avatar-mock.xs { width: 20px; height: 20px; font-size: 9px; }
+
+  .switch-mock {
+    width: 44px;
+    height: 24px;
+    border-radius: 12px;
+    background: #a8b2af;
+    position: relative;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .switch-mock.on { background: #81c700; }
+  .switch-mock::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform .2s;
+  }
+  .switch-mock.on::after { transform: translateX(20px); }
+
+  .checkbox-mock {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid #7a8682;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .checkbox-mock.checked { background: #81c700; border-color: #81c700; color: #f4fbe6; font-size: 11px; }
+
+  .radio-mock {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid #7a8682;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .radio-mock.selected::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #81c700;
+  }
+  .radio-mock.selected { border-color: #81c700; }
+
+  .progress-mock {
+    height: 6px;
+    border-radius: 3px;
+    background: #d4dad8;
+    width: 240px;
+    overflow: hidden;
+  }
+  .progress-mock .fill {
+    height: 100%;
+    border-radius: 3px;
+    background: #81c700;
+    transition: width .3s;
+  }
+
+  .separator-mock {
+    height: 1px;
+    background: #e8eceb;
+    width: 100%;
+  }
+
+  .skeleton-mock {
+    border-radius: 6px;
+    background: #d4dad8;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .card-mock {
+    border: 1px solid #e8eceb;
+    border-radius: 12px;
+    width: 300px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .card-mock .card-header { padding: 16px; }
+  .card-mock .card-title { font-size: 17px; font-weight: 600; }
+  .card-mock .card-desc { font-size: 14px; color: #525c59; margin-top: 2px; }
+  .card-mock .card-content { padding: 0 16px 16px; font-size: 14px; color: #3a4340; }
+  .card-mock .card-footer { padding: 12px 16px; border-top: 1px solid #e8eceb; display: flex; gap: 8px; justify-content: flex-end; }
+
+  .alert-mock {
+    border: 1px solid #e8eceb;
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+  .alert-mock.destructive { border-color: #de3543; background: #fcebec; }
+  .alert-mock .alert-icon { font-size: 16px; margin-top: 1px; }
+  .alert-mock .alert-title { font-weight: 600; font-size: 14px; }
+  .alert-mock .alert-desc { font-size: 13px; color: #3a4340; margin-top: 2px; }
+  .alert-mock.destructive .alert-title { color: #7a1d25; }
+  .alert-mock.destructive .alert-desc { color: #de3543; }
+
+  .tabs-mock {
+    display: flex;
+    gap: 0;
+    background: #d4dad8;
+    border-radius: 8px;
+    padding: 4px;
+  }
+  .tabs-mock .tab {
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 400;
+    font-family: inherit;
+    border: none;
+    background: transparent;
+  }
+  .tabs-mock .tab.active {
+    background: #fff;
+    font-weight: 600;
+  }
+
+  .select-mock {
+    height: 40px;
+    border: 1px solid #e8eceb;
+    border-radius: 8px;
+    padding: 0 12px;
+    width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #525c59;
+    cursor: pointer;
+  }
+
+  .spinner-mock {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #81c700;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+
+  .toggle-mock {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    transition: background .1s;
+  }
+  .toggle-mock:hover { background: #e8eceb; }
+  .toggle-mock.pressed { background: #a8b2af; font-weight: 600; }
+
+  /* ── Figma badge ── */
+  .figma-ref {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--sb-text-muted);
+    padding: 2px 8px;
+    background: var(--sb-bg-alt);
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+
+  /* ── Toast for copy ── */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transition: all .25s;
+    z-index: 999;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .page { padding: 20px 16px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h1>🍋 Lemon Pie DS</h1>
+    <p>Design System · React Native · 138 tokens · 20 components</p>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" placeholder="Buscar..." id="searchInput" oninput="filterNav(this.value)">
+  </div>
+  <nav class="sidebar-nav" id="sidebarNav">
+
+    <div class="nav-group">
+      <div class="nav-group-title">Getting Started</div>
+      <button class="nav-item active" onclick="showPage('overview')" data-search="overview visão geral">
+        <span class="icon">📖</span> Visão Geral
+      </button>
+      <button class="nav-item" onclick="showPage('installation')" data-search="installation instalação setup">
+        <span class="icon">📦</span> Instalação
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Tokens</div>
+      <button class="nav-item" onclick="showPage('colors')" data-search="colors cores tokens palette">
+        <span class="icon">🎨</span> Colors
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Primitives</div>
+      <button class="nav-item" onclick="showPage('button')" data-search="button botão">
+        <span class="icon">🔲</span> Button
+      </button>
+      <button class="nav-item" onclick="showPage('badge')" data-search="badge tag">
+        <span class="icon">🏷️</span> Badge
+      </button>
+      <button class="nav-item" onclick="showPage('input')" data-search="input campo texto">
+        <span class="icon">📝</span> Input
+      </button>
+      <button class="nav-item" onclick="showPage('textarea')" data-search="textarea campo texto multiline">
+        <span class="icon">📄</span> Textarea
+      </button>
+      <button class="nav-item" onclick="showPage('select')" data-search="select dropdown picker">
+        <span class="icon">📋</span> Select
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Controls</div>
+      <button class="nav-item" onclick="showPage('switch')" data-search="switch toggle interruptor">
+        <span class="icon">🔀</span> Switch
+      </button>
+      <button class="nav-item" onclick="showPage('checkbox')" data-search="checkbox check caixa seleção">
+        <span class="icon">☑️</span> Checkbox
+      </button>
+      <button class="nav-item" onclick="showPage('radio')" data-search="radio button grupo">
+        <span class="icon">🔘</span> RadioButton
+      </button>
+      <button class="nav-item" onclick="showPage('toggle')" data-search="toggle press botão">
+        <span class="icon">🔲</span> Toggle
+      </button>
+      <button class="nav-item" onclick="showPage('slider')" data-search="slider range deslizante">
+        <span class="icon">🎚️</span> Slider
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Data Display</div>
+      <button class="nav-item" onclick="showPage('avatar')" data-search="avatar imagem perfil">
+        <span class="icon">👤</span> Avatar
+      </button>
+      <button class="nav-item" onclick="showPage('card')" data-search="card cartão container">
+        <span class="icon">🃏</span> Card
+      </button>
+      <button class="nav-item" onclick="showPage('tabs')" data-search="tabs abas navegação">
+        <span class="icon">📑</span> Tabs
+      </button>
+      <button class="nav-item" onclick="showPage('progress')" data-search="progress barra progresso">
+        <span class="icon">📊</span> Progress
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Feedback</div>
+      <button class="nav-item" onclick="showPage('alert')" data-search="alert aviso alerta">
+        <span class="icon">⚠️</span> Alert
+      </button>
+      <button class="nav-item" onclick="showPage('spinner')" data-search="spinner loading carregando">
+        <span class="icon">🔄</span> Spinner
+      </button>
+      <button class="nav-item" onclick="showPage('skeleton')" data-search="skeleton loading placeholder">
+        <span class="icon">💀</span> Skeleton
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Layout</div>
+      <button class="nav-item" onclick="showPage('separator')" data-search="separator divisor linha">
+        <span class="icon">➖</span> Separator
+      </button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Overlays</div>
+      <button class="nav-item" onclick="showPage('dialog')" data-search="dialog modal popup">
+        <span class="icon">💬</span> Dialog
+      </button>
+      <button class="nav-item" onclick="showPage('sheet')" data-search="sheet bottom panel drawer">
+        <span class="icon">📜</span> Sheet
+      </button>
+    </div>
+
+  </nav>
+</aside>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<main class="main">
+
+<!-- ── OVERVIEW ── -->
+<div class="page active" id="page-overview">
+  <h2>🍋 Lemon Pie Design System</h2>
+  <p class="subtitle">Design tokens e componentes React Native extraídos do Figma — prontos para produção.</p>
+
+  <h3>O que está incluído</h3>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:12px; margin-top:12px;">
+    <div style="border:1px solid var(--sb-border); border-radius:8px; padding:16px;">
+      <div style="font-size:28px; margin-bottom:6px;">🎨</div>
+      <div style="font-weight:600; margin-bottom:2px;">138 Color Tokens</div>
+      <div style="font-size:13px; color:var(--sb-text-muted);">Semânticos, com light e dark mode</div>
+    </div>
+    <div style="border:1px solid var(--sb-border); border-radius:8px; padding:16px;">
+      <div style="font-size:28px; margin-bottom:6px;">🧩</div>
+      <div style="font-weight:600; margin-bottom:2px;">20 Components</div>
+      <div style="font-size:13px; color:var(--sb-text-muted);">React Native, tipados com TypeScript</div>
+    </div>
+    <div style="border:1px solid var(--sb-border); border-radius:8px; padding:16px;">
+      <div style="font-size:28px; margin-bottom:6px;">🌗</div>
+      <div style="font-weight:600; margin-bottom:2px;">Dark Mode</div>
+      <div style="font-size:13px; color:var(--sb-text-muted);">Provider + useTheme() hook</div>
+    </div>
+    <div style="border:1px solid var(--sb-border); border-radius:8px; padding:16px;">
+      <div style="font-size:28px; margin-bottom:6px;">🔗</div>
+      <div style="font-weight:600; margin-bottom:2px;">Figma Linked</div>
+      <div style="font-size:13px; color:var(--sb-text-muted);">Tokens vinculados ao Figma via variables</div>
+    </div>
+  </div>
+
+  <h3>Estrutura de pastas</h3>
+  <div class="code-block"><span class="cmt">lemon-pie-ds/</span>
+├── tokens/
+│   ├── colors.ts        <span class="cmt">// 138 semantic color tokens</span>
+│   ├── theme.tsx         <span class="cmt">// LemonPieThemeProvider + useTheme()</span>
+│   └── index.ts          <span class="cmt">// barrel export</span>
+└── components/
+    ├── Button.tsx
+    ├── Badge.tsx
+    ├── Input.tsx
+    ├── Textarea.tsx
+    ├── Select.tsx
+    ├── Switch.tsx
+    ├── Checkbox.tsx
+    ├── RadioButton.tsx
+    ├── Toggle.tsx
+    ├── Slider.tsx
+    ├── Avatar.tsx
+    ├── Card.tsx
+    ├── Tabs.tsx
+    ├── Progress.tsx
+    ├── Alert.tsx
+    ├── Spinner.tsx
+    ├── Skeleton.tsx
+    ├── Separator.tsx
+    ├── Dialog.tsx
+    ├── Sheet.tsx
+    └── index.ts          <span class="cmt">// barrel export</span></div>
+
+  <h3>Categorias de tokens</h3>
+  <p style="font-size:14px; line-height:1.6; margin-top:8px;">
+    Os tokens seguem uma hierarquia semântica com 7 categorias: <strong>action</strong> (interações como botões e links), <strong>background</strong> (fundos de telas e containers), <strong>surface</strong> (cards, inputs, borders), <strong>text</strong> (tipografia), <strong>icon</strong> (ícones), <strong>decorative</strong> (gráficos e avatares). Cada categoria tem subcategorias por intenção (neutral, branded, positive, negative, warning, information) e intensidade (veryHigh → high → default → low → veryLow → onColor).
+  </p>
+</div>
+
+<!-- ── INSTALLATION ── -->
+<div class="page" id="page-installation">
+  <h2>Instalação</h2>
+  <p class="subtitle">Como integrar o Lemon Pie DS no seu projeto React Native.</p>
+
+  <h3>1. Copiar os arquivos</h3>
+  <div class="code-block"><span class="cmt"># Copie as pastas tokens/ e components/ para o seu projeto</span>
+cp -r lemon-pie-ds/tokens src/design-system/tokens
+cp -r lemon-pie-ds/components src/design-system/components</div>
+
+  <h3>2. Envolver o app com o Provider</h3>
+  <div class="code-block"><span class="kw">import</span> { <span class="fn">LemonPieThemeProvider</span> } <span class="kw">from</span> <span class="str">'./design-system/tokens'</span>;
+
+<span class="kw">export default function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;LemonPieThemeProvider&gt;</span>
+      <span class="tag">&lt;NavigationContainer&gt;</span>
+        <span class="tag">&lt;RootStack /&gt;</span>
+      <span class="tag">&lt;/NavigationContainer&gt;</span>
+    <span class="tag">&lt;/LemonPieThemeProvider&gt;</span>
+  );
+}</div>
+
+  <h3>3. Usar em qualquer componente</h3>
+  <div class="code-block"><span class="kw">import</span> { <span class="fn">useTheme</span> } <span class="kw">from</span> <span class="str">'./design-system/tokens'</span>;
+<span class="kw">import</span> { <span class="fn">Button</span>, <span class="fn">Card</span> } <span class="kw">from</span> <span class="str">'./design-system/components'</span>;
+
+<span class="kw">function</span> <span class="fn">MyScreen</span>() {
+  <span class="kw">const</span> { colors, colorScheme, toggleColorScheme } = <span class="fn">useTheme</span>();
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;View</span> <span class="attr">style</span>={{ <span class="attr">backgroundColor</span>: colors.background.neutral.default }}<span class="tag">&gt;</span>
+      <span class="tag">&lt;Card</span> <span class="attr">title</span>=<span class="str">"Bem-vindo"</span> <span class="attr">description</span>=<span class="str">"Lemon Pie DS"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;Button</span> <span class="attr">onPress</span>={toggleColorScheme}<span class="tag">&gt;</span>
+          Trocar para {colorScheme === <span class="str">'light'</span> ? <span class="str">'dark'</span> : <span class="str">'light'</span>}
+        <span class="tag">&lt;/Button&gt;</span>
+      <span class="tag">&lt;/Card&gt;</span>
+    <span class="tag">&lt;/View&gt;</span>
+  );
+}</div>
+
+  <h3>Dependências</h3>
+  <p style="font-size:14px; margin-top:8px;">Nenhuma dependência extra. Todos os componentes usam apenas React Native core (<code>View</code>, <code>Text</code>, <code>Pressable</code>, <code>Modal</code>, <code>Animated</code>, <code>TextInput</code>, <code>ScrollView</code>, <code>Image</code>, <code>ActivityIndicator</code>).</p>
+</div>
+
+<!-- ── COLORS ── -->
+<div class="page" id="page-colors">
+  <h2>Colors <span class="badge">138 tokens</span></h2>
+  <p class="subtitle">Tokens semânticos de cor extraídos da coleção <code>🎨 colorTheme</code> do Figma. Cada token tem valor para light e dark mode.</p>
+
+  <div class="mode-toggle" id="colorModeToggle">
+    <button class="active" onclick="setColorMode('light')">☀️ Light</button>
+    <button onclick="setColorMode('dark')">🌙 Dark</button>
+  </div>
+
+  <div id="colorTokens"></div>
+</div>
+
+<!-- ══ COMPONENT PAGES ══ -->
+
+<!-- BUTTON -->
+<div class="page" id="page-button">
+  <h2>Button</h2>
+  <p class="subtitle">Botão interativo com 6 variantes visuais, 8 tamanhos e suporte a loading, ícones e disabled.</p>
+  <div class="figma-ref">Figma: Button (37:931) · 264 variants</div>
+
+  <h3>Variants</h3>
+  <div class="preview">
+    <button class="btn-mock default">Default</button>
+    <button class="btn-mock secondary">Secondary</button>
+    <button class="btn-mock destructive">Destructive</button>
+    <button class="btn-mock outline">Outline</button>
+    <button class="btn-mock ghost">Ghost</button>
+    <button class="btn-mock link">Link</button>
+  </div>
+
+  <h3>Sizes</h3>
+  <div class="preview" style="align-items:flex-end;">
+    <button class="btn-mock default xs">xs</button>
+    <button class="btn-mock default sm">sm</button>
+    <button class="btn-mock default">default</button>
+    <button class="btn-mock default lg">lg</button>
+  </div>
+
+  <h3>States</h3>
+  <div class="preview">
+    <button class="btn-mock default">Default</button>
+    <button class="btn-mock default" disabled>Disabled</button>
+    <button class="btn-mock default"><span class="spinner"></span> Loading</button>
+  </div>
+
+  <h3>Uso</h3>
+  <div class="code-block"><span class="kw">import</span> { <span class="fn">Button</span> } <span class="kw">from</span> <span class="str">'./components'</span>;
+
+<span class="tag">&lt;Button</span> <span class="attr">variant</span>=<span class="str">"default"</span> <span class="attr">size</span>=<span class="str">"default"</span> <span class="attr">onPress</span>={handlePress}<span class="tag">&gt;</span>
+  Confirmar
+<span class="tag">&lt;/Button&gt;</span>
+
+<span class="tag">&lt;Button</span> <span class="attr">variant</span>=<span class="str">"destructive"</span> <span class="attr">loading</span><span class="tag">&gt;</span>
+  Excluir
+<span class="tag">&lt;/Button&gt;</span>
+
+<span class="tag">&lt;Button</span> <span class="attr">variant</span>=<span class="str">"outline"</span> <span class="attr">leftIcon</span>={<span class="tag">&lt;PlusIcon /&gt;</span>}<span class="tag">&gt;</span>
+  Adicionar
+<span class="tag">&lt;/Button&gt;</span></div>
+
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>variant</code></td><td><code>'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'</code></td><td class="default">'default'</td><td>Variante visual</td></tr>
+      <tr><td><code>size</code></td><td><code>'default' | 'xs' | 'sm' | 'lg' | 'icon' | 'icon-xs' | 'icon-sm' | 'icon-lg'</code></td><td class="default">'default'</td><td>Tamanho</td></tr>
+      <tr><td><code>loading</code></td><td><code>boolean</code></td><td class="default">false</td><td>Mostra spinner e desabilita</td></tr>
+      <tr><td><code>disabled</code></td><td><code>boolean</code></td><td class="default">false</td><td>Desabilita interação</td></tr>
+      <tr><td><code>leftIcon</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Ícone à esquerda</td></tr>
+      <tr><td><code>rightIcon</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Ícone à direita</td></tr>
+      <tr><td><code>children</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Label do botão</td></tr>
+      <tr><td><code>onPress</code></td><td><code>() => void</code></td><td class="default">—</td><td>Callback de press</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- BADGE -->
+<div class="page" id="page-badge">
+  <h2>Badge</h2>
+  <p class="subtitle">Labels compactas para status, categorias e contagens.</p>
+  <div class="figma-ref">Figma: Badge · 18 variants + Badge Number · 15 variants</div>
+
+  <h3>Variants</h3>
+  <div class="preview">
+    <span class="badge-mock default">Default</span>
+    <span class="badge-mock secondary">Secondary</span>
+    <span class="badge-mock outline">Outline</span>
+    <span class="badge-mock destructive">Destructive</span>
+  </div>
+
+  <h3>Uso</h3>
+  <div class="code-block"><span class="kw">import</span> { <span class="fn">Badge</span>, <span class="fn">BadgeNumber</span> } <span class="kw">from</span> <span class="str">'./components'</span>;
+
+<span class="tag">&lt;Badge</span> <span class="attr">variant</span>=<span class="str">"default"</span><span class="tag">&gt;</span>Novo<span class="tag">&lt;/Badge&gt;</span>
+<span class="tag">&lt;BadgeNumber</span> <span class="attr">count</span>={<span class="val">42</span>} <span class="attr">variant</span>=<span class="str">"destructive"</span> <span class="tag">/&gt;</span></div>
+
+  <h3>Props — Badge</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>children</code></td><td><code>string</code></td><td class="default">—</td><td>Texto do badge</td></tr>
+      <tr><td><code>variant</code></td><td><code>'default' | 'secondary' | 'outline' | 'destructive' | 'verified' | 'ghost'</code></td><td class="default">'default'</td><td>Variante visual</td></tr>
+      <tr><td><code>leftIcon</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Ícone à esquerda</td></tr>
+      <tr><td><code>rightIcon</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Ícone à direita</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Props — BadgeNumber</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>count</code></td><td><code>number</code></td><td class="default">—</td><td>Valor numérico</td></tr>
+      <tr><td><code>max</code></td><td><code>number</code></td><td class="default">99</td><td>Valor máximo (mostra 99+)</td></tr>
+      <tr><td><code>variant</code></td><td><code>'default' | 'secondary' | 'outline' | 'destructive' | 'ghost'</code></td><td class="default">'default'</td><td>Variante visual</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- INPUT -->
+<div class="page" id="page-input">
+  <h2>Input</h2>
+  <p class="subtitle">Campo de entrada de texto com suporte a ícones, validação e estados.</p>
+  <div class="figma-ref">Figma: Input · 15 variants</div>
+
+  <h3>States</h3>
+  <div class="preview col">
+    <div><span class="preview-label">Default</span><input class="input-mock" placeholder="Placeholder"></div>
+    <div><span class="preview-label">Focus</span><input class="input-mock" placeholder="Focused" style="border-color:#81c700;"></div>
+    <div><span class="preview-label">Invalid</span><input class="input-mock invalid" placeholder="Erro" value="Email inválido"></div>
+    <div><span class="preview-label">Disabled</span><input class="input-mock" disabled placeholder="Disabled"></div>
+  </div>
+
+  <h3>Uso</h3>
+  <div class="code-block"><span class="kw">import</span> { <span class="fn">Input</span> } <span class="kw">from</span> <span class="str">'./components'</span>;
+
+<span class="tag">&lt;Input</span> <span class="attr">placeholder</span>=<span class="str">"Email"</span> <span class="attr">keyboardType</span>=<span class="str">"email-address"</span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;Input</span> <span class="attr">placeholder</span>=<span class="str">"Senha"</span> <span class="attr">secureTextEntry</span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;Input</span> <span class="attr">invalid</span> <span class="attr">value</span>=<span class="str">"abc"</span> <span class="tag">/&gt;</span></div>
+
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>invalid</code></td><td><code>boolean</code></td><td class="default">false</td><td>Estado de erro</td></tr>
+      <tr><td><code>leftElement</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Elemento à esquerda</td></tr>
+      <tr><td><code>rightElement</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Elemento à direita</td></tr>
+      <tr><td colspan="4" style="color:var(--sb-text-muted); font-size:12px;">+ todas as props de <code>TextInput</code> (placeholder, keyboardType, secureTextEntry, etc.)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TEXTAREA -->
+<div class="page" id="page-textarea">
+  <h2>Textarea</h2>
+  <p class="subtitle">Campo de texto multilinha.</p>
+  <div class="figma-ref">Figma: Textarea · 6 variants</div>
+  <h3>Preview</h3>
+  <div class="preview col">
+    <textarea class="textarea-mock" placeholder="Digite algo..."></textarea>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>invalid</code></td><td><code>boolean</code></td><td class="default">false</td><td>Estado de erro</td></tr>
+      <tr><td colspan="4" style="color:var(--sb-text-muted); font-size:12px;">+ todas as props de <code>TextInput</code></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SELECT -->
+<div class="page" id="page-select">
+  <h2>Select</h2>
+  <p class="subtitle">Trigger para picker/bottom sheet. Não inclui a lista de opções — combine com <code>@gorhom/bottom-sheet</code>.</p>
+  <div class="figma-ref">Figma: Select · 12 variants</div>
+  <h3>Preview</h3>
+  <div class="preview">
+    <div class="select-mock"><span>Selecione...</span><span>▼</span></div>
+    <div class="select-mock" style="color:#1c2422;"><span>Opção selecionada</span><span style="color:#7a8682;">▼</span></div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>placeholder</code></td><td><code>string</code></td><td class="default">'Select...'</td><td>Texto placeholder</td></tr>
+      <tr><td><code>value</code></td><td><code>string</code></td><td class="default">—</td><td>Label do valor selecionado</td></tr>
+      <tr><td><code>onPress</code></td><td><code>() => void</code></td><td class="default">—</td><td>Abre o picker</td></tr>
+      <tr><td><code>size</code></td><td><code>'default' | 'sm'</code></td><td class="default">'default'</td><td>Tamanho</td></tr>
+      <tr><td><code>disabled</code></td><td><code>boolean</code></td><td class="default">false</td><td>Desabilita</td></tr>
+      <tr><td><code>invalid</code></td><td><code>boolean</code></td><td class="default">false</td><td>Estado de erro</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SWITCH -->
+<div class="page" id="page-switch">
+  <h2>Switch</h2>
+  <p class="subtitle">Interruptor on/off com label, descrição e suporte a Box variant.</p>
+  <div class="figma-ref">Figma: Switch · 64 variants</div>
+  <h3>Preview</h3>
+  <div class="preview">
+    <div class="switch-mock" onclick="this.classList.toggle('on')"></div>
+    <div class="switch-mock on" onclick="this.classList.toggle('on')"></div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>value</code></td><td><code>boolean</code></td><td class="default">—</td><td>Ligado/desligado</td></tr>
+      <tr><td><code>onValueChange</code></td><td><code>(v: boolean) => void</code></td><td class="default">—</td><td>Callback</td></tr>
+      <tr><td><code>label</code></td><td><code>string</code></td><td class="default">—</td><td>Label</td></tr>
+      <tr><td><code>description</code></td><td><code>string</code></td><td class="default">—</td><td>Descrição</td></tr>
+      <tr><td><code>size</code></td><td><code>'default' | 'sm'</code></td><td class="default">'default'</td><td>Tamanho</td></tr>
+      <tr><td><code>type</code></td><td><code>'default' | 'box'</code></td><td class="default">'default'</td><td>Tipo visual</td></tr>
+      <tr><td><code>controlPlacement</code></td><td><code>'start' | 'end'</code></td><td class="default">'start'</td><td>Posição do controle</td></tr>
+      <tr><td><code>disabled</code></td><td><code>boolean</code></td><td class="default">false</td><td>Desabilita</td></tr>
+      <tr><td><code>invalid</code></td><td><code>boolean</code></td><td class="default">false</td><td>Estado de erro</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CHECKBOX -->
+<div class="page" id="page-checkbox">
+  <h2>Checkbox</h2>
+  <p class="subtitle">Caixa de seleção com label, descrição e variante Box.</p>
+  <div class="figma-ref">Figma: Checkbox · 40 variants</div>
+  <h3>Preview</h3>
+  <div class="preview" style="gap:16px;">
+    <div style="display:flex;align-items:center;gap:8px;"><div class="checkbox-mock" onclick="this.classList.toggle('checked');this.innerHTML=this.classList.contains('checked')?'✓':''"></div> <span style="font-size:14px;">Unchecked</span></div>
+    <div style="display:flex;align-items:center;gap:8px;"><div class="checkbox-mock checked" onclick="this.classList.toggle('checked');this.innerHTML=this.classList.contains('checked')?'✓':''">✓</div> <span style="font-size:14px;">Checked</span></div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>checked</code></td><td><code>boolean</code></td><td class="default">—</td><td>Selecionado</td></tr>
+      <tr><td><code>onCheckedChange</code></td><td><code>(v: boolean) => void</code></td><td class="default">—</td><td>Callback</td></tr>
+      <tr><td><code>label</code></td><td><code>string</code></td><td class="default">—</td><td>Label</td></tr>
+      <tr><td><code>description</code></td><td><code>string</code></td><td class="default">—</td><td>Descrição</td></tr>
+      <tr><td><code>type</code></td><td><code>'default' | 'box'</code></td><td class="default">'default'</td><td>Tipo visual</td></tr>
+      <tr><td><code>controlPlacement</code></td><td><code>'start' | 'end'</code></td><td class="default">'start'</td><td>Posição do controle</td></tr>
+      <tr><td><code>disabled</code></td><td><code>boolean</code></td><td class="default">false</td><td>Desabilita</td></tr>
+      <tr><td><code>invalid</code></td><td><code>boolean</code></td><td class="default">false</td><td>Estado de erro</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- RADIO -->
+<div class="page" id="page-radio">
+  <h2>RadioButton</h2>
+  <p class="subtitle">Botão de opção para seleção exclusiva dentro de um grupo.</p>
+  <div class="figma-ref">Figma: RadioButton · 32 variants</div>
+  <h3>Preview</h3>
+  <div class="preview" style="gap:16px;">
+    <div style="display:flex;align-items:center;gap:8px;"><div class="radio-mock selected"></div> <span style="font-size:14px;">Opção A</span></div>
+    <div style="display:flex;align-items:center;gap:8px;"><div class="radio-mock"></div> <span style="font-size:14px;">Opção B</span></div>
+    <div style="display:flex;align-items:center;gap:8px;"><div class="radio-mock"></div> <span style="font-size:14px;">Opção C</span></div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>selected</code></td><td><code>boolean</code></td><td class="default">—</td><td>Selecionado</td></tr>
+      <tr><td><code>onPress</code></td><td><code>() => void</code></td><td class="default">—</td><td>Callback</td></tr>
+      <tr><td><code>label</code></td><td><code>string</code></td><td class="default">—</td><td>Label</td></tr>
+      <tr><td><code>description</code></td><td><code>string</code></td><td class="default">—</td><td>Descrição</td></tr>
+      <tr><td><code>type</code></td><td><code>'default' | 'box'</code></td><td class="default">'default'</td><td>Tipo visual</td></tr>
+      <tr><td><code>controlPlacement</code></td><td><code>'start' | 'end'</code></td><td class="default">'start'</td><td>Posição do controle</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TOGGLE -->
+<div class="page" id="page-toggle">
+  <h2>Toggle</h2>
+  <p class="subtitle">Botão de pressão com estado on/off. Use em toolbars e filtros.</p>
+  <div class="figma-ref">Figma: Toggle · 30 variants</div>
+  <h3>Preview</h3>
+  <div class="preview">
+    <button class="toggle-mock pressed" onclick="this.classList.toggle('pressed')">Bold</button>
+    <button class="toggle-mock" onclick="this.classList.toggle('pressed')">Italic</button>
+    <button class="toggle-mock" onclick="this.classList.toggle('pressed')">Underline</button>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>pressed</code></td><td><code>boolean</code></td><td class="default">—</td><td>Pressionado</td></tr>
+      <tr><td><code>onPressedChange</code></td><td><code>(v: boolean) => void</code></td><td class="default">—</td><td>Callback</td></tr>
+      <tr><td><code>label</code></td><td><code>string</code></td><td class="default">—</td><td>Label</td></tr>
+      <tr><td><code>icon</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Ícone</td></tr>
+      <tr><td><code>variant</code></td><td><code>'default' | 'outline'</code></td><td class="default">'default'</td><td>Variante visual</td></tr>
+      <tr><td><code>size</code></td><td><code>'default' | 'sm' | 'lg'</code></td><td class="default">'default'</td><td>Tamanho</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SLIDER -->
+<div class="page" id="page-slider">
+  <h2>Slider</h2>
+  <p class="subtitle">Controle deslizante para seleção de valores em um intervalo.</p>
+  <div class="figma-ref">Figma: Slider · 4 variants</div>
+  <h3>Preview</h3>
+  <div class="preview col">
+    <div style="width:280px; position:relative; height:20px;">
+      <div style="position:absolute;top:8px;left:0;right:0;height:4px;border-radius:2px;background:#d4dad8;">
+        <div style="width:60%;height:100%;border-radius:2px;background:#81c700;"></div>
+      </div>
+      <div style="position:absolute;top:0;left:60%;margin-left:-10px;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid #81c700;box-shadow:0 1px 3px rgba(0,0,0,.15);"></div>
+    </div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>value</code></td><td><code>number</code></td><td class="default">—</td><td>Valor atual</td></tr>
+      <tr><td><code>onValueChange</code></td><td><code>(v: number) => void</code></td><td class="default">—</td><td>Callback</td></tr>
+      <tr><td><code>min</code></td><td><code>number</code></td><td class="default">0</td><td>Valor mínimo</td></tr>
+      <tr><td><code>max</code></td><td><code>number</code></td><td class="default">1</td><td>Valor máximo</td></tr>
+      <tr><td><code>step</code></td><td><code>number</code></td><td class="default">—</td><td>Incremento</td></tr>
+      <tr><td><code>disabled</code></td><td><code>boolean</code></td><td class="default">false</td><td>Desabilita</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- AVATAR -->
+<div class="page" id="page-avatar">
+  <h2>Avatar</h2>
+  <p class="subtitle">Representação visual de um usuário com imagem, iniciais ou ícone.</p>
+  <div class="figma-ref">Figma: Avatar · 15 variants</div>
+  <h3>Sizes</h3>
+  <div class="preview">
+    <div class="avatar-mock xs">CN</div>
+    <div class="avatar-mock sm">CN</div>
+    <div class="avatar-mock">CN</div>
+    <div class="avatar-mock xl">CN</div>
+  </div>
+  <h3>Avatar Group</h3>
+  <div class="preview">
+    <div style="display:flex;">
+      <div class="avatar-mock" style="border:2px solid #fff;z-index:4;">RL</div>
+      <div class="avatar-mock" style="border:2px solid #fff;margin-left:-10px;z-index:3;">AB</div>
+      <div class="avatar-mock" style="border:2px solid #fff;margin-left:-10px;z-index:2;">CD</div>
+      <div class="avatar-mock" style="border:2px solid #fff;margin-left:-10px;z-index:1;background:#e8eceb;font-size:11px;">+3</div>
+    </div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>source</code></td><td><code>ImageSourcePropType</code></td><td class="default">—</td><td>Imagem (renderiza modo image)</td></tr>
+      <tr><td><code>fallback</code></td><td><code>string</code></td><td class="default">—</td><td>Iniciais</td></tr>
+      <tr><td><code>icon</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Ícone</td></tr>
+      <tr><td><code>size</code></td><td><code>'xl' | 'lg' | 'default' | 'sm' | 'xs'</code></td><td class="default">'default'</td><td>Tamanho</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CARD -->
+<div class="page" id="page-card">
+  <h2>Card</h2>
+  <p class="subtitle">Container com header, conteúdo e footer.</p>
+  <div class="figma-ref">Figma: Card · 2 variants</div>
+  <h3>Preview</h3>
+  <div class="preview">
+    <div class="card-mock">
+      <div class="card-header"><div class="card-title">Título do Card</div><div class="card-desc">Esta é uma descrição.</div></div>
+      <div class="card-content">Conteúdo do card vai aqui.</div>
+      <div class="card-footer"><button class="btn-mock outline" style="height:32px;font-size:13px;">Cancelar</button><button class="btn-mock default" style="height:32px;font-size:13px;">Confirmar</button></div>
+    </div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>title</code></td><td><code>string</code></td><td class="default">—</td><td>Título</td></tr>
+      <tr><td><code>description</code></td><td><code>string</code></td><td class="default">—</td><td>Descrição</td></tr>
+      <tr><td><code>image</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Imagem no topo</td></tr>
+      <tr><td><code>action</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Ação no header</td></tr>
+      <tr><td><code>children</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Conteúdo principal</td></tr>
+      <tr><td><code>footer</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Footer</td></tr>
+      <tr><td><code>size</code></td><td><code>'default' | 'sm'</code></td><td class="default">'default'</td><td>Tamanho</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TABS -->
+<div class="page" id="page-tabs">
+  <h2>Tabs</h2>
+  <p class="subtitle">Navegação por abas com variantes Default e Line.</p>
+  <div class="figma-ref">Figma: Tabs · 3 variants</div>
+  <h3>Default</h3>
+  <div class="preview">
+    <div class="tabs-mock">
+      <button class="tab active">Geral</button>
+      <button class="tab">Detalhes</button>
+      <button class="tab">Histórico</button>
+    </div>
+  </div>
+  <h3>Line</h3>
+  <div class="preview">
+    <div style="display:flex;border-bottom:1px solid #e8eceb;">
+      <button style="padding:8px 14px;border:none;background:none;border-bottom:2px solid #81c700;font-weight:600;font-size:14px;font-family:inherit;cursor:pointer;">Geral</button>
+      <button style="padding:8px 14px;border:none;background:none;border-bottom:2px solid transparent;font-size:14px;color:#525c59;font-family:inherit;cursor:pointer;">Detalhes</button>
+      <button style="padding:8px 14px;border:none;background:none;border-bottom:2px solid transparent;font-size:14px;color:#525c59;font-family:inherit;cursor:pointer;">Histórico</button>
+    </div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>items</code></td><td><code>TabItem[]</code></td><td class="default">—</td><td>Itens das abas</td></tr>
+      <tr><td><code>activeKey</code></td><td><code>string</code></td><td class="default">—</td><td>Chave da aba ativa</td></tr>
+      <tr><td><code>onTabChange</code></td><td><code>(key: string) => void</code></td><td class="default">—</td><td>Callback</td></tr>
+      <tr><td><code>variant</code></td><td><code>'default' | 'line'</code></td><td class="default">'default'</td><td>Variante visual</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PROGRESS -->
+<div class="page" id="page-progress">
+  <h2>Progress</h2>
+  <p class="subtitle">Barra de progresso linear.</p>
+  <div class="figma-ref">Figma: Progress · 5 variants</div>
+  <h3>Preview</h3>
+  <div class="preview col" style="gap:16px;">
+    <div><span class="preview-label">25%</span><div class="progress-mock"><div class="fill" style="width:25%;"></div></div></div>
+    <div><span class="preview-label">50%</span><div class="progress-mock"><div class="fill" style="width:50%;"></div></div></div>
+    <div><span class="preview-label">75%</span><div class="progress-mock"><div class="fill" style="width:75%;"></div></div></div>
+    <div><span class="preview-label">100%</span><div class="progress-mock"><div class="fill" style="width:100%;"></div></div></div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>value</code></td><td><code>number</code></td><td class="default">—</td><td>Valor 0–100</td></tr>
+      <tr><td><code>height</code></td><td><code>number</code></td><td class="default">6</td><td>Altura da barra</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ALERT -->
+<div class="page" id="page-alert">
+  <h2>Alert</h2>
+  <p class="subtitle">Mensagem de alerta com variantes Default e Destructive.</p>
+  <div class="figma-ref">Figma: Alert · 2 variants</div>
+  <h3>Default</h3>
+  <div class="preview col">
+    <div class="alert-mock">
+      <span class="alert-icon">ℹ️</span>
+      <div><div class="alert-title">Informação</div><div class="alert-desc">Este é um alerta informativo.</div></div>
+    </div>
+  </div>
+  <h3>Destructive</h3>
+  <div class="preview col">
+    <div class="alert-mock destructive">
+      <span class="alert-icon">⚠️</span>
+      <div><div class="alert-title">Erro</div><div class="alert-desc">Algo deu errado. Tente novamente.</div></div>
+    </div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>title</code></td><td><code>string</code></td><td class="default">—</td><td>Título</td></tr>
+      <tr><td><code>description</code></td><td><code>string</code></td><td class="default">—</td><td>Descrição</td></tr>
+      <tr><td><code>variant</code></td><td><code>'default' | 'destructive'</code></td><td class="default">'default'</td><td>Variante</td></tr>
+      <tr><td><code>icon</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Ícone à esquerda</td></tr>
+      <tr><td><code>action</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Botão de ação</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SPINNER -->
+<div class="page" id="page-spinner">
+  <h2>Spinner</h2>
+  <p class="subtitle">Indicador de carregamento animado.</p>
+  <div class="figma-ref">Figma: Spinner · 20 variants (5 sizes × 4 rotation frames)</div>
+  <h3>Preview</h3>
+  <div class="preview" style="gap:20px;">
+    <div class="spinner-mock" style="width:12px;height:12px;border-width:2px;"></div>
+    <div class="spinner-mock" style="width:16px;height:16px;border-width:2px;"></div>
+    <div class="spinner-mock" style="width:20px;height:20px;border-width:2.5px;"></div>
+    <div class="spinner-mock"></div>
+    <div class="spinner-mock" style="width:32px;height:32px;border-width:3.5px;"></div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>size</code></td><td><code>'3' | '4' | '5' | '6' | '8'</code></td><td class="default">'6'</td><td>Tamanho</td></tr>
+      <tr><td><code>color</code></td><td><code>string</code></td><td class="default">branded.default</td><td>Cor customizada</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SKELETON -->
+<div class="page" id="page-skeleton">
+  <h2>Skeleton</h2>
+  <p class="subtitle">Placeholder animado para conteúdo em carregamento.</p>
+  <div class="figma-ref">Figma: Skeleton · 5 variants</div>
+  <h3>Preview</h3>
+  <div class="preview col" style="gap:10px;">
+    <div style="display:flex;gap:12px;align-items:center;">
+      <div class="skeleton-mock" style="width:40px;height:40px;border-radius:50%;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div class="skeleton-mock" style="width:160px;height:14px;"></div>
+        <div class="skeleton-mock" style="width:100px;height:12px;"></div>
+      </div>
+    </div>
+    <div class="skeleton-mock" style="width:100%;height:120px;border-radius:8px;"></div>
+    <div class="skeleton-mock" style="width:80%;height:12px;"></div>
+    <div class="skeleton-mock" style="width:60%;height:12px;"></div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>width</code></td><td><code>number | string</code></td><td class="default">'100%'</td><td>Largura</td></tr>
+      <tr><td><code>height</code></td><td><code>number | string</code></td><td class="default">16</td><td>Altura</td></tr>
+      <tr><td><code>borderRadius</code></td><td><code>number</code></td><td class="default">6</td><td>Arredondamento</td></tr>
+      <tr><td><code>circle</code></td><td><code>boolean</code></td><td class="default">false</td><td>Circular</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SEPARATOR -->
+<div class="page" id="page-separator">
+  <h2>Separator</h2>
+  <p class="subtitle">Linha divisória horizontal ou vertical.</p>
+  <div class="figma-ref">Figma: Separator · 2 variants</div>
+  <h3>Preview</h3>
+  <div class="preview col" style="gap:16px;">
+    <div style="width:100%;">
+      <span class="preview-label">Horizontal</span>
+      <div class="separator-mock"></div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:stretch;height:60px;">
+      <span style="font-size:14px;">Item A</span>
+      <div style="width:1px;background:#e8eceb;"></div>
+      <span style="font-size:14px;">Item B</span>
+      <div style="width:1px;background:#e8eceb;"></div>
+      <span style="font-size:14px;">Item C</span>
+    </div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>orientation</code></td><td><code>'horizontal' | 'vertical'</code></td><td class="default">'horizontal'</td><td>Orientação</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- DIALOG -->
+<div class="page" id="page-dialog">
+  <h2>Dialog</h2>
+  <p class="subtitle">Modal centralizado com título, descrição e ações.</p>
+  <div class="figma-ref">Figma: Dialog · standalone component</div>
+  <h3>Preview</h3>
+  <div class="preview">
+    <div class="card-mock" style="width:360px;box-shadow:0 8px 32px rgba(0,0,0,.12);">
+      <div class="card-header" style="position:relative;">
+        <div class="card-title">Confirmar ação</div>
+        <div class="card-desc">Tem certeza que deseja prosseguir?</div>
+        <span style="position:absolute;top:12px;right:12px;cursor:pointer;color:#7a8682;">✕</span>
+      </div>
+      <div class="card-footer"><button class="btn-mock outline" style="height:32px;font-size:13px;">Cancelar</button><button class="btn-mock default" style="height:32px;font-size:13px;">Confirmar</button></div>
+    </div>
+  </div>
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>visible</code></td><td><code>boolean</code></td><td class="default">—</td><td>Visibilidade</td></tr>
+      <tr><td><code>onClose</code></td><td><code>() => void</code></td><td class="default">—</td><td>Callback de fechar</td></tr>
+      <tr><td><code>title</code></td><td><code>string</code></td><td class="default">—</td><td>Título</td></tr>
+      <tr><td><code>description</code></td><td><code>string</code></td><td class="default">—</td><td>Descrição</td></tr>
+      <tr><td><code>showCloseButton</code></td><td><code>boolean</code></td><td class="default">true</td><td>Mostra botão X</td></tr>
+      <tr><td><code>children</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Conteúdo</td></tr>
+      <tr><td><code>footer</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Ações do footer</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SHEET -->
+<div class="page" id="page-sheet">
+  <h2>Sheet</h2>
+  <p class="subtitle">Painel deslizante (bottom sheet, drawer lateral). Ideal para menus, filtros e formulários.</p>
+  <div class="figma-ref">Figma: Sheet · 4 variants (left, right, top, bottom)</div>
+  <h3>Uso</h3>
+  <div class="code-block"><span class="kw">import</span> { <span class="fn">Sheet</span> } <span class="kw">from</span> <span class="str">'./components'</span>;
+
+<span class="tag">&lt;Sheet</span>
+  <span class="attr">visible</span>={showSheet}
+  <span class="attr">onClose</span>={() => setShowSheet(<span class="val">false</span>)}
+  <span class="attr">position</span>=<span class="str">"bottom"</span>
+  <span class="attr">title</span>=<span class="str">"Filtros"</span>
+  <span class="attr">description</span>=<span class="str">"Selecione as opções"</span>
+  <span class="attr">footer</span>={
+    <span class="tag">&lt;&gt;</span>
+      <span class="tag">&lt;Button</span> <span class="attr">variant</span>=<span class="str">"outline"</span> <span class="attr">onPress</span>={clearFilters}<span class="tag">&gt;</span>Limpar<span class="tag">&lt;/Button&gt;</span>
+      <span class="tag">&lt;Button</span> <span class="attr">onPress</span>={applyFilters}<span class="tag">&gt;</span>Aplicar<span class="tag">&lt;/Button&gt;</span>
+    <span class="tag">&lt;/&gt;</span>
+  }
+<span class="tag">&gt;</span>
+  {<span class="cmt">/* conteúdo dos filtros */</span>}
+<span class="tag">&lt;/Sheet&gt;</span></div>
+
+  <h3>Props</h3>
+  <table class="props-table">
+    <thead><tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr></thead>
+    <tbody>
+      <tr><td><code>visible</code></td><td><code>boolean</code></td><td class="default">—</td><td>Visibilidade</td></tr>
+      <tr><td><code>onClose</code></td><td><code>() => void</code></td><td class="default">—</td><td>Callback de fechar</td></tr>
+      <tr><td><code>position</code></td><td><code>'left' | 'right' | 'top' | 'bottom'</code></td><td class="default">'bottom'</td><td>Posição de entrada</td></tr>
+      <tr><td><code>title</code></td><td><code>string</code></td><td class="default">—</td><td>Título</td></tr>
+      <tr><td><code>description</code></td><td><code>string</code></td><td class="default">—</td><td>Descrição</td></tr>
+      <tr><td><code>showCloseButton</code></td><td><code>boolean</code></td><td class="default">true</td><td>Mostra botão X</td></tr>
+      <tr><td><code>children</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Conteúdo</td></tr>
+      <tr><td><code>footer</code></td><td><code>ReactNode</code></td><td class="default">—</td><td>Footer</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── Color Tokens Data ──────────────────────────────────────────────
+const lightColors={"action":{"neutral":{"veryHigh":"#101715","high":"#1c2422","default":"#3a4340","low":"#a8b2af","veryLow":"#e8eceb","onColor":"#101715"},"branded":{"high":"#4e7800","default":"#81c700","low":"#cbee8a","onColor":"#f4fbe6"},"positive":{"high":"#2b5700","default":"#4f9e00","low":"#c8e1b0","onColor":"#edf5e6"},"negative":{"high":"#7a1d25","default":"#de3543","low":"#f0a2a9","onColor":"#fcebec"},"warning":{"high":"#8c7419","default":"#ffd22e","low":"#ffea9f","onColor":"#fffbea"},"information":{"high":"#174654","default":"#298099","low":"#9dc5d0","onColor":"#eaf2f5"}},"background":{"neutral":{"high":"#f2f4f3","default":"#ffffff","low":"#e8eceb"},"branded":{"high":"#4e7800","default":"#8edb00","low":"#cbee8a","onColor":"#f4fbe6"},"secondary":{"high":"#7a8682","default":"#a8b2af","low":"#d4dad8"},"modal":{"default":"#000000a6"}},"surface":{"neutral":{"high":"#7a8682","default":"#ffffff","low":"#e8eceb","onColor":"#f2f4f3"},"branded":{"high":"#4e7800","default":"#8edb00","low":"#cbee8a","onColor":"#f4fbe6"},"positive":{"high":"#2b5700","default":"#4f9e00","low":"#c8e1b0","onColor":"#edf5e6"},"negative":{"high":"#7a1d25","default":"#de3543","low":"#f0a2a9","onColor":"#fcebec"},"warning":{"high":"#8c7419","default":"#ffd22e","low":"#ffea9f","onColor":"#fffbea"},"information":{"high":"#174654","default":"#298099","low":"#9dc5d0","onColor":"#eaf2f5"}},"text":{"neutral":{"veryHigh":"#101715","high":"#1c2422","default":"#3a4340","low":"#525c59","veryLow":"#a8b2af","onColor":"#101715"},"branded":{"high":"#4e7800","default":"#81c700","low":"#cbee8a","onColor":"#f4fbe6"},"positive":{"high":"#2b5700","default":"#4f9e00","low":"#aed28a","onColor":"#edf5e6"},"negative":{"high":"#7a1d25","default":"#de3543","low":"#f0a2a9","onColor":"#fcebec"},"warning":{"high":"#8c7419","default":"#e8bf2a","low":"#ffea9f","onColor":"#fffbea"},"information":{"high":"#174654","default":"#298099","low":"#9dc5d0","onColor":"#eaf2f5"}},"icon":{"neutral":{"veryHigh":"#101715","high":"#1c2422","default":"#3a4340","low":"#7a8682","veryLow":"#d4dad8","onColor":"#101715"},"branded":{"high":"#4e7800","default":"#81c700","low":"#cbee8a","onColor":"#f4fbe6"},"positive":{"high":"#2b5700","default":"#4f9e00","low":"#aed28a","onColor":"#edf5e6"},"negative":{"high":"#7a1d25","default":"#de3543","low":"#f0a2a9","onColor":"#fcebec"},"warning":{"high":"#8c7419","default":"#ffd22e","low":"#ffea9f","onColor":"#fffbea"},"information":{"high":"#174654","default":"#298099","low":"#9dc5d0","onColor":"#eaf2f5"}},"decorative":{"graphs":{"graph1":{"high":"#214200","default":"#72b133","low":"#edf5e6"},"graph2":{"high":"#68351a","default":"#f99964","low":"#fef2ec"},"graph3":{"high":"#5c2d44","default":"#e389b4","low":"#fcf0f6"},"graph4":{"high":"#113640","default":"#5499ad","low":"#eaf2f5"},"graph5":{"high":"#6b5813","default":"#ffdb58","low":"#fffbea"},"graph6":{"high":"#5d161c","default":"#e55d69","low":"#fcebec"}},"avatar":{"high":"#7a8682","default":"#d4dad8","low":"#e8eceb","onColor":"#1c2422"}}};
+const darkColors={"action":{"neutral":{"veryHigh":"#ffffff","high":"#ffffff","default":"#d4dad8","low":"#7a8682","veryLow":"#3a4340","onColor":"#101715"},"branded":{"high":"#cbee8a","default":"#b3e754","low":"#8edb00","onColor":"#3c5c00"},"positive":{"high":"#89be54","default":"#4f9e00","low":"#387000","onColor":"#edf5e6"},"negative":{"high":"#e97881","default":"#de3543","low":"#9e2630","onColor":"#fcebec"},"warning":{"high":"#ffe173","default":"#ffd22e","low":"#b59521","onColor":"#fffbea"},"information":{"high":"#70aabb","default":"#298099","low":"#1d5b6d","onColor":"#eaf2f5"}},"background":{"neutral":{"high":"#101715","default":"#101715","low":"#101715"},"branded":{"high":"#cbee8a","default":"#b3e754","low":"#8edb00","onColor":"#3c5c00"},"secondary":{"high":"#525c59","default":"#7a8682","low":"#a8b2af"},"modal":{"default":"#000000a6"}},"surface":{"neutral":{"high":"#3a4340","default":"#1c2422","low":"#3a4340","onColor":"#ffffff"},"branded":{"high":"#cbee8a","default":"#b3e754","low":"#8edb00","onColor":"#3c5c00"},"positive":{"high":"#387000","default":"#489000","low":"#214200","onColor":"#c8e1b0"},"negative":{"high":"#9e2630","default":"#ca303d","low":"#5d161c","onColor":"#f5c0c5"},"warning":{"high":"#b59521","default":"#b59521","low":"#8c7419","onColor":"#fff1be"},"information":{"high":"#70aabb","default":"#25748b","low":"#113640","onColor":"#bdd8df"}},"text":{"neutral":{"veryHigh":"#ffffff","high":"#ffffff","default":"#d4dad8","low":"#a8b2af","veryLow":"#7a8682","onColor":"#101715"},"branded":{"high":"#cbee8a","default":"#b3e754","low":"#a5e233","onColor":"#3c5c00"},"positive":{"high":"#aed28a","default":"#89be54","low":"#c8e1b0","onColor":"#c8e1b0"},"negative":{"high":"#f0a2a9","default":"#e97881","low":"#f5c0c5","onColor":"#f5c0c5"},"warning":{"high":"#ffea9f","default":"#ffe173","low":"#fff1be","onColor":"#6b5813"},"information":{"high":"#70aabb","default":"#70aabb","low":"#113640","onColor":"#9dc5d0"}},"icon":{"neutral":{"veryHigh":"#ffffff","high":"#ffffff","default":"#d4dad8","low":"#a8b2af","veryLow":"#7a8682","onColor":"#101715"},"branded":{"high":"#dcf4b0","default":"#cbee8a","low":"#b3e754","onColor":"#3c5c00"},"positive":{"high":"#aed28a","default":"#72b133","low":"#489000","onColor":"#edf5e6"},"negative":{"high":"#f0a2a9","default":"#e55d69","low":"#ca303d","onColor":"#fcebec"},"warning":{"high":"#ffea9f","default":"#ffdb58","low":"#e8bf2a","onColor":"#fffbea"},"information":{"high":"#70aabb","default":"#25748b","low":"#113640","onColor":"#9dc5d0"}},"decorative":{"graphs":{"graph1":{"high":"#edf5e6","default":"#72b133","low":"#214200"},"graph2":{"high":"#fef2ec","default":"#f99964","low":"#68351a"},"graph3":{"high":"#fcf0f6","default":"#e389b4","low":"#5c2d44"},"graph4":{"high":"#eaf2f5","default":"#5499ad","low":"#113640"},"graph5":{"high":"#fffbea","default":"#ffdb58","low":"#6b5813"},"graph6":{"high":"#fcebec","default":"#e55d69","low":"#5d161c"}},"avatar":{"high":"#7a8682","default":"#525c59","low":"#3a4340","onColor":"#ffffff"}}};
+
+let currentMode = 'light';
+
+// ─── Navigation ─────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  const btn = document.querySelector(`[onclick="showPage('${id}')"]`);
+  if (btn) btn.classList.add('active');
+  document.querySelector('.main').scrollTop = 0;
+}
+
+function filterNav(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    const text = (item.textContent + ' ' + (item.dataset.search || '')).toLowerCase();
+    item.style.display = text.includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-group').forEach(group => {
+    const visible = group.querySelectorAll('.nav-item:not([style*="display: none"])');
+    group.style.display = visible.length > 0 ? '' : 'none';
+  });
+}
+
+// ─── Color Tokens Renderer ──────────────────────────────────────────
+function renderColorTokens() {
+  const colors = currentMode === 'dark' ? darkColors : lightColors;
+  const container = document.getElementById('colorTokens');
+  let html = '';
+
+  function renderGroup(obj, prefix) {
+    const entries = Object.entries(obj);
+    for (const [key, value] of entries) {
+      if (typeof value === 'string') {
+        // leaf token
+        const path = prefix + '/' + key;
+        const textColor = isLightColor(value) ? '#1c2422' : '#ffffff';
+        html += `<div class="swatch" onclick="copySwatch('${path}', '${value}')" title="Click to copy">
+          <div class="swatch-color" style="background:${value};"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">${path}</div>
+            <div class="swatch-hex">${value}</div>
+          </div>
+        </div>`;
+      }
+    }
+  }
+
+  function renderCategory(obj, prefix, title) {
+    html += `<h4 style="margin-top:20px;">${title}</h4><div class="token-grid">`;
+    for (const [subKey, subVal] of Object.entries(obj)) {
+      if (typeof subVal === 'object' && typeof Object.values(subVal)[0] === 'string') {
+        renderGroup(subVal, prefix + '/' + subKey);
+      } else if (typeof subVal === 'object') {
+        for (const [innerKey, innerVal] of Object.entries(subVal)) {
+          if (typeof innerVal === 'object') {
+            renderGroup(innerVal, prefix + '/' + subKey + '/' + innerKey);
+          }
+        }
+      }
+    }
+    html += '</div>';
+  }
+
+  renderCategory(colors.action, 'action', 'Action');
+  renderCategory(colors.background, 'background', 'Background');
+  renderCategory(colors.surface, 'surface', 'Surface');
+  renderCategory(colors.text, 'text', 'Text');
+  renderCategory(colors.icon, 'icon', 'Icon');
+  renderCategory(colors.decorative, 'decorative', 'Decorative');
+
+  container.innerHTML = html;
+}
+
+function setColorMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('#colorModeToggle button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#colorModeToggle button')[mode === 'light' ? 0 : 1].classList.add('active');
+  renderColorTokens();
+}
+
+function isLightColor(hex) {
+  hex = hex.replace('#', '').substring(0, 6);
+  const r = parseInt(hex.substr(0,2), 16);
+  const g = parseInt(hex.substr(2,2), 16);
+  const b = parseInt(hex.substr(4,2), 16);
+  return (r * 299 + g * 587 + b * 114) / 1000 > 150;
+}
+
+function copySwatch(path, hex) {
+  const text = `colors.${path.replace(/\//g, '.')}`;
+  navigator.clipboard.writeText(text).then(() => showToast(`Copied: ${text}`));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// Init
+renderColorTokens();
+</script>
+</body>
+</html>
